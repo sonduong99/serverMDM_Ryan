@@ -1,0 +1,69 @@
+body{background-color: #393a4e;font-family: "Helvetica Neue", "Arial", sans-serif;}
+	{overflow:hidden;}
+a{text-decoration:none;}
+		.tongyong{}
+		.zhengti{margin: 70px}
+		.juzhong{text-align:center}
+		.juzuo{text-align: left;color:#f4e4c0;font-size: 4rem}
+		.juzuo1{text-align: center;color:#f4e4c0;font-size: 3.5rem}
+		.juzuo2{color:#686868;font-size: 3rem;padding:4rem 0 0}
+		.dierhang{color:#f4e4c0;font-size:2.8rem;Text-indent:2rem;padding: 2rem 0 3rem}
+		.saomatishi{background-color:#fcbd20;color:#ffffdd;margin: 1.2rem 0 0;padding:5rem 4rem;font-size:3rem;Border-radius:1rem}
+		.erweima{background-color:#fff;Border-radius:1rem}
+		.ewm{margin: 5rem 0 0 ;width: 580px;height: 580px}
+		.true{margin: 10rem 0 2rem ;width: 260px;height: 260px}
+		.truetxt{color:#000000}
+		.truetxt p.jinchang{font-size:3em;margin:0}
+		.truetxt p.riqi{font-size:3em;margin:0 0 2rem}
+		.zise{color:#96b0a5}
+		.footsty{font-size: 2rem;padding:2rem}
+		.shuaxinerweima{color:#686868;font-size:2rem;padding:5rem 0 0}
+		.yishengxiao{color:#2bd56b;padding:5rem 2rem 0;font-size:4.5rem}
+		.shijian{color:#1dc25a;padding:0 2rem 2rem ;font-size: 3rem}
+		.yuan1{float:left;margin:-1.5rem 0 0 -1.5rem}
+		.yuan2{float:right;margin:-1.5rem -1.5rem 0 0}
+		.yuant{width:3rem;height:3rem;background:#393a4e;Border-radius:1.5rem}
+		
+::	-webkit-media-controls-panel{
+			display:none!important;
+			}
+::	-webkit-media-controls-enclosure{
+			overflow:hidden!important;
+			}	
+		
+		
+		
+
+.word_breath {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        /* Safari and Chrome播放器写法 */
+        -webkit-animation-name: breath;/* 动画名称 */
+        -webkit-animation-duration: 1.5s;/* 动画时长3秒 */
+        -webkit-animation-timing-function: ease-in-out;/* 动画速度曲线：以低速开始和结束 */
+        -webkit-animation-iteration-count: infinite;/* 播放次数：无限 */
+
+        
+    }
+ 
+@keyframes breath {
+        /* 动画开始时的不透明度 */
+        from {
+            opacity: 0;
+        }
+ 
+        /* 动画50% 时的不透明度 */
+        50% {
+            opacity: 1;
+        }
+ 
+        /* 动画结束时的不透明度 */
+        to {
+            opacity: 0;
+        }
+ 
+        
+    }
+		
