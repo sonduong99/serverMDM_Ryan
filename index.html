@@ -8,6 +8,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<link rel="apple-touch-icon" href="icon.png">
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link rel="manifest" href="manifest.json">
 
 
 </head>
@@ -26,13 +27,13 @@
 	<div class="yuan2 yuant"></div>
 	
 	<div class="juzhong erweima zise">
-		<div class="juzuo2" id="dateTime00" style="font-weight: 570;"></div>
+		<div class="juzuo2" id="dateTime00" style="font-weight: 500;"></div>
 		<div id="neirong">
 			<img class="ewm" src="./ewm.gif"> 		
 		</div>
 		<div id="neirong1">	
 			<div>
-				<a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem;display: inline-block;" href="javascript:location.reload()">刷新二维码</a>
+				<a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="javascript:location.reload()">刷新二维码</a>
 			</div>
 		</div>
 		<div class="juzhong footsty yishengxiao word_breath">
@@ -100,5 +101,14 @@
 </div>
 
 <div id="ai-assist-root"></div>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(() => {
+      console.log("Service Worker Registered v3");
+    });
+  }
+</script>
+
 
 </body></html>
