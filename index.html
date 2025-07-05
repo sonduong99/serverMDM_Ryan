@@ -1,17 +1,22 @@
 <!-- -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<html><head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=GBK">
 	<title>&#8206;</title>
 	<link rel="apple-touch-icon-precomposed" href="http://abc.haoyunlai.xyz/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="./style.css">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<link rel="apple-touch-icon" href="icon.png">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+
+
 </head>
 
 <body>
-<p><br><br><br><br><br></p>	
+<p><br><br></p>	
 <div class="zhengti">
 	<div class="juzuo1">
-			V24060031(Ryan Luu)
+			V24060031(Lưu Đức Quang)
 	</div>
 	<div class="saomatishi juzhong" id="biaoti">
 		将二维码对准扫描器扫码进出场	
@@ -21,7 +26,7 @@
 	<div class="yuan2 yuant"></div>
 	
 	<div class="juzhong erweima zise">
-		<div class="juzuo2" id="dateTime00" style="font-weight: 500;"></div>
+		<div class="juzuo2" id="dateTime00" style="font-weight: 570;"></div>
 		<div id="neirong">
 			<img class="ewm" src="./ewm.gif"> 		
 		</div>
@@ -64,6 +69,7 @@
 					document.getElementById('neirong').innerHTML="<img class='true' src='./true.png'><div	class='truetxt'><p class='jinchang'>进场成功</p><p class='riqi' id='dateTime01'></p></div>";
 
 					setInterval(function () {
+					
 						  const dt = document.getElementById('dateTime01');
 						  if (dt) {
 							dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm');
