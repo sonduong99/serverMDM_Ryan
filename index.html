@@ -78,18 +78,50 @@
 						}, 1000);
 				}
 			</script>
-		
-			<div id="dateTime3">00:01</div>
-				<script>
-					let seconds = 200;
-					setInterval(function() {
-					seconds++;
-					let mins = Math.floor(seconds / 60);
-					let secs = seconds % 60;
-					document.getElementById('dateTime3').innerHTML =(mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
-					}
-					, 1000);
-				</script>
+		<div id="dateTime3">00:00</div>
+<script>
+    // Lấy thời điểm bắt đầu từ localStorage hoặc tạo mới
+    let startTime = localStorage.getItem("startTime");
+    if (!startTime) {
+        startTime = Date.now();
+        localStorage.setItem("startTime", startTime);
+    } else {
+        startTime = parseInt(startTime);
+    }
+
+    // Cập nhật hiển thị mỗi giây
+    setInterval(function () {
+        let diff = Math.floor((Date.now() - startTime) / 1000); // giây
+        let hrs = Math.floor(diff / 3600);
+        let mins = Math.floor((diff % 3600) / 60);
+        let secs = diff % 60;
+
+        // Nếu tới 12 giờ → reset
+        if (hrs >= 12) {
+            startTime = Date.now();
+            localStorage.setItem("startTime", startTime);
+            hrs = 0;
+            mins = 0;
+            secs = 0;
+        }
+
+        if (hrs > 0) {
+            // Nếu có giờ → h:mm:ss
+            document.getElementById('dateTime3').innerHTML =
+                hrs + ':' +
+                (mins < 10 ? '0' : '') + mins + ':' +
+                (secs < 10 ? '0' : '') + secs;
+        } else {
+            // Nếu chưa tới 1 giờ → mm:ss
+            document.getElementById('dateTime3').innerHTML =
+                (mins < 10 ? '0' : '') + mins + ':' +
+                (secs < 10 ? '0' : '') + secs;
+        }
+    }, 1000);
+</script>
+			
+
+			
 		</div>
 	</div>
 	
