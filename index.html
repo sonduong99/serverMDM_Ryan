@@ -96,8 +96,8 @@
         let mins = Math.floor((diff % 3600) / 60);
         let secs = diff % 60;
 
-        // Nếu tới 12 giờ → reset
-        if (hrs >= 12) {
+        // Nếu tới 24 giờ → reset
+        if (hrs >= 24) {
             startTime = Date.now();
             localStorage.setItem("startTime", startTime);
             hrs = 0;
