@@ -13,7 +13,20 @@
 
 </head>
 
-<body>
+<body> <script>
+  const LIMIT = 13 * 60 * 60; // 13 tiếng = 46800 giây
+  let timePassed = parseInt(localStorage.getItem("timePassed")) || 0;
+
+  let timer = setInterval(() => {
+    timePassed++;
+    localStorage.setItem("timePassed", timePassed);
+
+    if (timePassed >= LIMIT) {
+      clearInterval(timer);
+      localStorage.removeItem("timePassed");
+    }
+  }, 1000);
+</script>
 <p><br><br></p>	
 <div class="zhengti">
 	<div class="juzuo1">
