@@ -14,18 +14,62 @@
 </head>
 
 <body> <script>
-  const LIMIT = 13 * 60 * 60; // 13 tiếng = 46800 giây
-  let timePassed = parseInt(localStorage.getItem("timePassed")) || 0;
-
-  let timer = setInterval(() => {
-    timePassed++;
-    localStorage.setItem("timePassed", timePassed);
-
-    if (timePassed >= LIMIT) {
-      clearInterval(timer);
-      localStorage.removeItem("timePassed");
+  <!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Timer 13 tiếng</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background: #f0f0f0;
     }
-  }, 1000);
+    #timer {
+      font-size: 48px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bộ đếm 13 tiếng</h1>
+  <div id="timer">00:00:00</div>
+
+  <script>
+    function startTimer() {
+      let duration = 13 * 60 * 60 * 1000; // 13 tiếng (ms)
+      let startTime = Date.now();
+
+      function updateTimer() {
+        let now = Date.now();
+        let diff = now - startTime;
+
+        if (diff >= duration) {
+          // Khi đủ 13 tiếng thì reset về 0 và dừng
+          document.getElementById("timer").innerText = "13:00:00";
+          clearInterval(timerInterval);
+          return;
+        }
+
+        let hours = Math.floor(diff / (1000 * 60 * 60));
+        let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById("timer").innerText =
+          `${hours.toString().padStart(2, "0")}:` +
+          `${minutes.toString().padStart(2, "0")}:` +
+          `${seconds.toString().padStart(2, "0")}`;
+      }
+
+      let timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    startTimer();
+  </script>
+</body>
+</html>
 </script>
 <p><br><br></p>	
 <div class="zhengti">
