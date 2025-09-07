@@ -94,33 +94,6 @@
 </html>
 <body>
  
-
-  <script>
-    function startTimer() {
-      let duration = 13 * 60 * 60 * 1000; // 13 tiếng (ms)
-      let startTime = Date.now();
-
-      function updateTimer() {
-        let now = Date.now();
-        let diff = now - startTime;
-
-        if (diff >= duration) {
-          // Khi đủ 13 tiếng thì reset về 0 và dừng
-          document.getElementById("timer").innerText = "13:00:00";
-          clearInterval(timerInterval);
-          return;
-        }
-
-        let hours = Math.floor(diff / (1000 * 60 * 60));
-        let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        document.getElementById("timer").innerText =
-          `${hours.toString().padStart(2, "0")}:` +
-          `${minutes.toString().padStart(2, "0")}:` +
-          `${seconds.toString().padStart(2, "0")}`;
-      }
-
       updateTimer(); // chạy ngay lần đầu tiên khi mở
 let timerInterval = setInterval(updateTimer, 1000);
     startTimer();
