@@ -14,25 +14,85 @@
 </head>
 
 <body> <script>
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Timer 13 tiếng</title>
+  <title>Bộ đếm 2 giai đoạn (07:55 - 19:55)</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      margin-top: 50px;
-      background: #f0f0f0;
-    }
-    #timer {
+      padding-top: 100px;
+      background: #111;
+      color: #00ff00;
       font-size: 48px;
-      font-weight: bold;
-      color: #333;
+    }
+    #phase {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #ffcc00;
     }
   </style>
 </head>
+<body>
+  <div id="phase"></div>
+  <div id="timer">00:00:00</div>
+
+  <script>
+    function updateTimer() {
+      const now = new Date();
+
+      // Mốc ban ngày
+      const dayStart = new Date(now);
+      dayStart.setHours(7, 55, 0, 0); // 07:55
+
+      const dayEnd = new Date(now);
+      dayEnd.setHours(19, 55, 0, 0); // 19:55
+
+      // Mốc ban đêm
+      let nightStart = new Date(dayEnd);
+      let nightEnd = new Date(dayStart);
+      nightEnd.setDate(nightEnd.getDate() + 1); // 07:55 hôm sau
+
+      let cycleLength = 12 * 60 * 60 * 1000; // 12 giờ
+      let elapsed = 0;
+      let phase = "";
+
+      if (now >= dayStart && now < dayEnd) {
+        // Ban ngày
+        phase = "Ban ngày (07:55 → 19:55)";
+        elapsed = now - dayStart;
+      } else {
+        // Ban đêm
+        if (now < dayStart) {
+          nightStart.setDate(nightStart.getDate() - 1);
+          nightEnd.setDate(nightEnd.getDate() - 1);
+        }
+        phase = "Ban đêm (19:55 → 07:55)";
+        elapsed = now - nightStart;
+      }
+
+      // Giới hạn trong chu kỳ
+      elapsed = elapsed % cycleLength;
+
+      // Tính giờ phút giây
+      const hours = Math.floor(elapsed / (1000 * 60 * 60));
+      const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+      document.getElementById("phase").textContent = phase;
+      document.getElementById("timer").textContent =
+        String(hours).padStart(2, '0') + ":" +
+        String(minutes).padStart(2, '0') + ":" +
+        String(seconds).padStart(2, '0');
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
+</body>
+</html>
 <body>
   <h1>Bộ đếm 13 tiếng</h1>
   <div id="timer">00:00:00</div>
