@@ -1,4 +1,3 @@
-<!-- -->
 <html><head>
 	<meta charset="UTF-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=GBK">
@@ -9,8 +8,6 @@
 	<link rel="apple-touch-icon" href="icon.png">
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
 	<link rel="manifest" href="manifest.json">
-
-
 </head>
 
 <body>
@@ -78,50 +75,50 @@
 						}, 1000);
 				}
 			</script>
-		<div id="dateTime3">00:00</div>
-<script>
-    // Lấy thời điểm bắt đầu từ localStorage hoặc tạo mới
-    let startTime = localStorage.getItem("startTime");
-    if (!startTime) {
-        startTime = Date.now();
-        localStorage.setItem("startTime", startTime);
-    } else {
-        startTime = parseInt(startTime);
-    }
+		
+		<!-- Bộ đếm 12 tiếng -->
+		<div id="dateTime3" style="font-size:24px; color:green;">00:00:00</div>
+		<script>
+		function updateTimer() {
+		  const now = new Date();
 
-    // Cập nhật hiển thị mỗi giây
-    setInterval(function () {
-        let diff = Math.floor((Date.now() - startTime) / 1000); // giây
-        let hrs = Math.floor(diff / 3600);
-        let mins = Math.floor((diff % 3600) / 60);
-        let secs = diff % 60;
+		  // Mốc bắt đầu ca ngày (07:55) và ca đêm (19:55)
+		  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 55, 0);
+		  const nightStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 55, 0);
 
-        // Nếu tới 24 giờ → reset
-        if (hrs >= 24) {
-            startTime = Date.now();
-            localStorage.setItem("startTime", startTime);
-            hrs = 0;
-            mins = 0;
-            secs = 0;
-        }
+		  let start;
 
-        if (hrs > 0) {
-            // Nếu có giờ → h:mm:ss
-            document.getElementById('dateTime3').innerHTML =
-                hrs + ':' +
-                (mins < 10 ? '0' : '') + mins + ':' +
-                (secs < 10 ? '0' : '') + secs;
-        } else {
-            // Nếu chưa tới 1 giờ → mm:ss
-            document.getElementById('dateTime3').innerHTML =
-                (mins < 10 ? '0' : '') + mins + ':' +
-                (secs < 10 ? '0' : '') + secs;
-        }
-    }, 1000);
-</script>
-			
+		  if (now >= dayStart && now < nightStart) {
+			// Trong ca ngày
+			start = dayStart;
+		  } else {
+			// Trong ca đêm
+			if (now < dayStart) {
+			  // Trước 07:55 sáng → ca đêm tính từ hôm trước 19:55
+			  nightStart.setDate(nightStart.getDate() - 1);
+			}
+			start = nightStart;
+		  }
 
-			
+		  // Tính số giây đã trôi qua từ mốc bắt đầu ca
+		  let elapsed = Math.floor((now - start) / 1000);
+
+		  // Chu kỳ 12 tiếng = 43200 giây
+		  const cycleSeconds = 12 * 60 * 60;
+		  elapsed = elapsed % cycleSeconds;
+
+		  // Chuyển giây thành hh:mm:ss
+		  const hours = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+		  const minutes = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+		  const seconds = String(elapsed % 60).padStart(2, '0');
+
+		  document.getElementById("dateTime3").textContent = `${hours}:${minutes}:${seconds}`;
+		}
+
+		// Chạy ngay khi load và lặp mỗi giây
+		updateTimer();
+		setInterval(updateTimer, 1000);
+		</script>
 		</div>
 	</div>
 	
@@ -141,6 +138,4 @@
     });
   }
 </script>
-
-
 </body></html>
