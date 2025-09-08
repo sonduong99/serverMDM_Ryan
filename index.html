@@ -18,84 +18,52 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Bộ đếm 2 giai đoạn (07:55 - 19:55)</title>
+  <title>Bộ đếm 12h vô hạn</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 100px;
-      background: #111;
-      color: #00ff00;
-      font-size: 48px;
-    }
-    #phase {
-      font-size: 28px;
-      margin-bottom: 20px;
-      color: #ffcc00;
-    }
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    #counter { font-size: 2.5em; color: green; }
   </style>
 </head>
 <body>
-
+  <h2>Bộ đếm 12 tiếng (vô hạn)</h2>
+  <div id="counter">00:00:00</div>
 
   <script>
-    function updateTimer() {
-      const now = new Date();
+  function updateCounter() {
+    const now = new Date();
 
-      // Mốc ban ngày
-      const dayStart = new Date(now);
-      dayStart.setHours(7, 55, 0, 0); // 07:55
+    // Mốc bắt đầu chu kỳ sáng 07:55
+    let cycleStart = new Date(now);
+    cycleStart.setHours(7, 55, 0, 0);
 
-      const dayEnd = new Date(now);
-      dayEnd.setHours(19, 55, 0, 0); // 19:55
-
-      // Mốc ban đêm
-      let nightStart = new Date(dayEnd);
-      let nightEnd = new Date(dayStart);
-      nightEnd.setDate(nightEnd.getDate() + 1); // 07:55 hôm sau
-
-      let cycleLength = 12 * 60 * 60 * 1000; // 12 giờ
-      let elapsed = 0;
-      let phase = "";
-
-      if (now >= dayStart && now < dayEnd) {
-        // Ban ngày
-        phase = "Ban ngày (07:55 → 19:55)";
-        elapsed = now - dayStart;
-      } else {
-        // Ban đêm
-        if (now < dayStart) {
-          nightStart.setDate(nightStart.getDate() - 1);
-          nightEnd.setDate(nightEnd.getDate() - 1);
-        }
-        phase = "Ban đêm (19:55 → 07:55)";
-        elapsed = now - nightStart;
-      }
-
-      // Giới hạn trong chu kỳ
-      elapsed = elapsed % cycleLength;
-
-      // Tính giờ phút giây
-      const hours = Math.floor(elapsed / (1000 * 60 * 60));
-      const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
-
-      document.getElementById("phase").textContent = phase;
-      document.getElementById("timer").textContent =
-        String(hours).padStart(2, '0') + ":" +
-        String(minutes).padStart(2, '0') + ":" +
-        String(seconds).padStart(2, '0');
+    // Nếu hiện tại trước 07:55 thì lùi về hôm qua
+    if (now < cycleStart) {
+      cycleStart.setDate(cycleStart.getDate() - 1);
     }
 
-    setInterval(updateTimer, 1000);
-    updateTimer();
+    // Chu kỳ 12 tiếng (ms)
+    const cycleDuration = 12 * 60 * 60 * 1000;
+
+    // Thời gian đã trôi qua từ mốc 07:55 gần nhất
+    let elapsed = now - cycleStart;
+
+    // Lấy dư để reset mỗi 12 tiếng
+    let inCycle = elapsed % cycleDuration;
+
+    // Quy đổi ra giờ phút giây
+    let hours = Math.floor(inCycle / (1000 * 60 * 60));
+    let minutes = Math.floor((inCycle % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((inCycle % (1000 * 60)) / 1000);
+
+    // Hiển thị
+    document.getElementById("counter").innerText =
+      `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  }
+
+  setInterval(updateCounter, 1000);
   </script>
 </body>
 </html>
-  </script>
-</body>
-</html>
-</script>
 <p><br><br></p>	
 <div class="zhengti">
 	<div class="juzuo1">
