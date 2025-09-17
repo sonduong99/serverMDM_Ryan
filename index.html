@@ -67,7 +67,6 @@
 					document.getElementById('neirong').innerHTML="<img class='true' src='./true.png'><div	class='truetxt'><p class='jinchang'>进场成功</p><p class='riqi' id='dateTime01'></p></div>";
 
 					setInterval(function () {
-					
 						  const dt = document.getElementById('dateTime01');
 						  if (dt) {
 							dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm');
@@ -77,14 +76,14 @@
 			</script>
 		
 		<!-- Bộ đếm 12 tiếng -->
-		<div id="dateTime3" style="font-size:44px; color:00C853;">00:00 </div>
+		<div id="dateTime3" style="font-size:44px; color:#00C853;">00:00</div>
 		<script>
 		function updateTimer() {
 		  const now = new Date();
 
-		  // Mốc bắt đầu ca ngày (07:55) và ca đêm (19:55)
-		  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 55, 0);
-		  const nightStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 55, 0);
+		  // Mốc bắt đầu ca ngày (08:00) và ca đêm (20:00)
+		  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
+		  const nightStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0);
 
 		  let start;
 
@@ -94,7 +93,7 @@
 		  } else {
 			// Trong ca đêm
 			if (now < dayStart) {
-			  // Trước 07:55 sáng → ca đêm tính từ hôm trước 19:55
+			  // Trước 08:00 sáng → ca đêm tính từ hôm trước 20:00
 			  nightStart.setDate(nightStart.getDate() - 1);
 			}
 			start = nightStart;
@@ -107,12 +106,24 @@
 		  const cycleSeconds = 12 * 60 * 60;
 		  elapsed = elapsed % cycleSeconds;
 
-		  // Chuyển giây thành hh:mm:ss
-		  const hours = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-		  const minutes = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-		  const seconds = String(elapsed % 60).padStart(2, '0');
+		  // Chuyển giây thành h:m:s
+		  const hours = Math.floor(elapsed / 3600);
+		  const minutes = Math.floor((elapsed % 3600) / 60);
+		  const seconds = elapsed % 60;
 
-		  document.getElementById("dateTime3").textContent = `${hours}:${minutes}:${seconds}`;
+		  let display;
+		  if (hours > 0) {
+			display =
+			  String(hours).padStart(2, '0') + ":" +
+			  String(minutes).padStart(2, '0') + ":" +
+			  String(seconds).padStart(2, '0');
+		  } else {
+			display =
+			  String(minutes).padStart(2, '0') + ":" +
+			  String(seconds).padStart(2, '0');
+		  }
+
+		  document.getElementById("dateTime3").textContent = display;
 		}
 
 		// Chạy ngay khi load và lặp mỗi giây
