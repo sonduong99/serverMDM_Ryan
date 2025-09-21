@@ -77,59 +77,64 @@
 		
 		<!-- Bộ đếm 12 tiếng -->
 		<div id="dateTime3" style="font-size:44px; color:#00C853;">00:00</div>
-		<script>
-		function updateTimer() {
-		  const now = new Date();
+<div id="dateTime3" style="font-size:44px; color:#00C853;">00:00</div>
+<script>
+function updateTimer() {
+  const now = new Date();
 
-		  // Mốc bắt đầu ca ngày (07:58) và ca đêm (19:58)
-		  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
-		  const nightStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0);
+  // Ca ngày và ca đêm
+  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 58, 0);
+  const nightStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 58, 0);
 
-		  let start;
+  let start, end;
 
-		  if (now >= dayStart && now < nightStart) {
-			// Trong ca ngày
-			start = dayStart;
-		  } else {
-			// Trong ca đêm
-			if (now < dayStart) {
-			  // Trước 07:58 sáng → ca đêm tính từ hôm trước 19:58
-			  nightStart.setDate(nightStart.getDate() - 1);
-			}
-			start = nightStart;
-		  }
+  if (now >= dayStart && now < nightStart) {
+    // Trong ca ngày
+    start = dayStart;
+    end = nightStart;
+  } else {
+    // Trong ca đêm
+    if (now < dayStart) {
+      // Trước 07:58 sáng → ca đêm hôm trước
+      start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 19, 58, 0);
+      end = dayStart;
+    } else {
+      // Sau 19:58 → ca đêm hôm nay
+      start = nightStart;
+      end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 7, 58, 0);
+    }
+  }
 
-		  // Tính số giây đã trôi qua từ mốc bắt đầu ca
-		  let elapsed = Math.floor((now - start) / 1000);
+  // Số giây đã trôi qua từ mốc bắt đầu ca
+  let elapsed = Math.floor((now - start) / 1000);
 
-		  // Chu kỳ 12 tiếng = 43200 giây
-		  const cycleSeconds = 12 * 60 * 60;
-		  elapsed = elapsed % cycleSeconds;
+  // Chu kỳ = thời gian ca hiện tại
+  const cycleSeconds = Math.floor((end - start) / 1000);
+  elapsed = elapsed % cycleSeconds;
 
-		  // Chuyển giây thành h:m:s
-		  const hours = Math.floor(elapsed / 3600);
-		  const minutes = Math.floor((elapsed % 3600) / 60);
-		  const seconds = elapsed % 60;
+  // Chuyển giây thành hh:mm:ss
+  const hours = Math.floor(elapsed / 3600);
+  const minutes = Math.floor((elapsed % 3600) / 60);
+  const seconds = elapsed % 60;
 
-		  let display;
-		  if (hours > 0) {
-			display =
-			  String(hours).padStart(2, '0') + ":" +
-			  String(minutes).padStart(2, '0') + ":" +
-			  String(seconds).padStart(2, '0');
-		  } else {
-			display =
-			  String(minutes).padStart(2, '0') + ":" +
-			  String(seconds).padStart(2, '0');
-		  }
+  // Hiển thị
+  let display;
+  if (hours > 0) {
+    display = String(hours).padStart(2,'0') + ':' +
+              String(minutes).padStart(2,'0') + ':' +
+              String(seconds).padStart(2,'0');
+  } else {
+    display = String(minutes).padStart(2,'0') + ':' +
+              String(seconds).padStart(2,'0');
+  }
 
-		  document.getElementById("dateTime3").textContent = display;
-		}
+  document.getElementById("dateTime3").textContent = display;
+}
 
-		// Chạy ngay khi load và lặp mỗi giây
-		updateTimer();
-		setInterval(updateTimer, 1000);
-		</script>
+// Chạy ngay khi load và cập nhật mỗi giây
+updateTimer();
+setInterval(updateTimer, 1000);
+</script>
 		</div>
 	</div>
 	
