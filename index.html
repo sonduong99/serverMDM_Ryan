@@ -81,7 +81,7 @@
 		function updateTimer() {
 		  const now = new Date();
 
-		  // Mốc bắt đầu ca ngày (08:00) và ca đêm (20:00)
+		  // Mốc bắt đầu ca ngày (07:58) và ca đêm (19:58)
 		  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
 		  const nightStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0);
 
@@ -93,7 +93,7 @@
 		  } else {
 			// Trong ca đêm
 			if (now < dayStart) {
-			  // Trước 08:00 sáng → ca đêm tính từ hôm trước 20:00
+			  // Trước 07:58 sáng → ca đêm tính từ hôm trước 19:58
 			  nightStart.setDate(nightStart.getDate() - 1);
 			}
 			start = nightStart;
