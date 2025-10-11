@@ -8,6 +8,30 @@
 	<link rel="apple-touch-icon" href="icon.png">
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
 	<link rel="manifest" href="manifest.json">
+
+	<!-- 🖼️ ẢNH NỀN -->
+	<style>
+	body {
+	  background-image: url('./IMG_8622.jpeg');
+	  background-size: cover;
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  background-attachment: fixed;
+	  font-family: 'Noto Sans', sans-serif;
+	  margin: 0;
+	  padding: 0;
+	}
+
+	/* Làm nổi khung nội dung giữa trang */
+	.zhengti {
+	  background-color: rgba(255, 255, 255, 0.85);
+	  border-radius: 12px;
+	  padding: 25px;
+	  max-width: 800px;
+	  margin: 60px auto;
+	  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	}
+	</style>
 </head>
 
 <body>
@@ -88,35 +112,26 @@ function updateTimer() {
   let start, end;
 
   if (now >= dayStart && now < nightStart) {
-    // Trong ca ngày
     start = dayStart;
     end = nightStart;
   } else {
-    // Trong ca đêm
     if (now < dayStart) {
-      // Trước 07:58 sáng → ca đêm hôm trước
       start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 19, 58, 0);
       end = dayStart;
     } else {
-      // Sau 19:58 → ca đêm hôm nay
       start = nightStart;
       end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 7, 58, 0);
     }
   }
 
-  // Số giây đã trôi qua từ mốc bắt đầu ca
   let elapsed = Math.floor((now - start) / 1000);
-
-  // Chu kỳ = thời gian ca hiện tại
   const cycleSeconds = Math.floor((end - start) / 1000);
   elapsed = elapsed % cycleSeconds;
 
-  // Chuyển giây thành hh:mm:ss
   const hours = Math.floor(elapsed / 3600);
   const minutes = Math.floor((elapsed % 3600) / 60);
   const seconds = elapsed % 60;
 
-  // Hiển thị
   let display;
   if (hours > 0) {
     display = String(hours).padStart(2,'0') + ':' +
@@ -130,18 +145,15 @@ function updateTimer() {
   document.getElementById("dateTime3").textContent = display;
 }
 
-// Chạy ngay khi load và cập nhật mỗi giây
 updateTimer();
 setInterval(updateTimer, 1000);
 </script>
 		</div>
 	</div>
 	
-<!-- End ImageReady Slices -->
 	<div class="dierhang">
 		尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
 	</div>
-
 </div>
 
 <div id="ai-assist-root"></div>
