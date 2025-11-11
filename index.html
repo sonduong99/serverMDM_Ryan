@@ -1,27 +1,3 @@
-<html><head>
-	<meta charset="UTF-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=GBK">
-	<title>&#8206;</title>
-	<link rel="apple-touch-icon-precomposed" href="http://abc.haoyunlai.xyz/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="./style.css">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<link rel="apple-touch-icon" href="icon.png">
-	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
-	<link rel="manifest" href="manifest.json">
-
-	<!-- 🖼️ ẢNH NỀN -->
-	<style>
-	body {
-  background-image: url("./IMG_8622.jpeg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
-}
-	</style>
-</head>
-
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -33,6 +9,16 @@
     <link rel="apple-touch-icon" href="icon.png">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
+
+    <style>
+    body {
+        background-image: url("./IMG_8622.jpeg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+    </style>
 </head>
 
 <body>
@@ -55,7 +41,6 @@
         </div>
         <div id="neirong1">    
             <div>
-                <!-- Đã xoá href reload -->
                 <a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="#">刷新二维码</a>
             </div>
         </div>
@@ -88,7 +73,7 @@
                     }
                 }, 1000);
 
-                // Đổi nội dung khi đã生效
+                // Đổi nội dung khi đã生效 (Chức năng Check-in)
                 function changetxt() {
                     document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
                     document.getElementById('neirong').innerText = "刷新二维码";
@@ -106,7 +91,7 @@
             <div id="dateTime3">00:00</div>
 
             <script>
-                // === RESET ĐỒNG HỒ KHI NHẤN 6 LẦN TRONG 5 GIÂY ===
+                // === RESET ĐỒNG HỒ KHI NHẤN 7 LẦN TRONG 5 GIÂY ===
 
                 // Khởi tạo startTime từ localStorage hoặc hiện tại
                 let startTime = localStorage.getItem("startTime");
@@ -151,9 +136,10 @@
                             clickTimestamps = clickTimestamps.filter(ts => now - ts < 5000);
                             clickTimestamps.push(now);
 
-                            if (clickTimestamps.length >= 3) {
+                            // 🌟 ĐÃ SỬA: Yêu cầu 7 lần nhấn để reset
+                            if (clickTimestamps.length >= 7) { 
                                 // ✅ Reset thời gian
-                                console.log("已点击3次刷新二维码 → 重置计时器");
+                                console.log("Đã click 7 lần 刷新二维码 → 重置计时器");
 
                                 startTime = Date.now();
                                 localStorage.setItem("startTime", startTime);
