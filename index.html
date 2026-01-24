@@ -1,35 +1,28 @@
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=GBK">
     <title>&#8206;</title>
-    <link rel="apple-touch-icon-precomposed" href="http://abc.haoyunlai.xyz/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./style.css">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="icon.png">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
-
     <style>
-    body {
-        background-image: url("./IMG_8622.jpeg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-attachment: fixed;
-    }
+        body {
+            background-image: url("./IMG_8622.jpeg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
     </style>
 </head>
 
 <body>
 <p><br><br></p>    
 <div class="zhengti">
-    <div class="juzuo1">
-        V25051817 (Phạm Sơn Dương)
-    </div>
-    <div class="saomatishi juzhong" id="biaoti">
-        将二维码对准扫描器扫码进出场    
-    </div>
+    <div class="juzuo1">V25051817 (Phạm Sơn Dương)</div>
+    <div class="saomatishi juzhong" id="biaoti">将二维码对准扫描器扫码进出场</div>
     
     <div class="yuan1 yuant"></div>
     <div class="yuan2 yuant"></div>
@@ -39,116 +32,19 @@
         <div id="neirong">
             <img class="ewm" src="./ewm.gif">         
         </div>
+        
         <div id="neirong1">    
             <div>
                 <a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="#">刷新二维码</a>
             </div>
         </div>
+
         <div class="juzhong footsty yishengxiao word_breath">
-            <div style="display:" onclick="changetxt()">已生效</div>
+            <div id="trigger-success" style="cursor: pointer;">已生效</div>
         </div>
+
         <div class="juzhong footsty shijian">
-            <script>
-                // Định dạng ngày giờ
-                Date.prototype.format = function (fmt) {
-                    var o = {
-                        "y+": this.getFullYear(),
-                        "M+": this.getMonth() + 1,
-                        "d+": this.getDate(),
-                        "h+": this.getHours(),
-                        "m+": this.getMinutes(),
-                        "s+": this.getSeconds(),
-                    };
-                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-                    for (var k in o)
-                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-                    return fmt;
-                }
-
-                // Cập nhật ngày giờ hiện tại
-                setInterval(function () {
-                    const dt = document.getElementById('dateTime00');
-                    if (dt) {
-                        dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
-                    }
-                }, 1000);
-
-                // Đổi nội dung khi đã生效 (Chức năng Check-in)
-                function changetxt() {
-                    document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
-                    document.getElementById('neirong').innerText = "刷新二维码";
-                    document.getElementById('neirong').innerHTML = "<img class='true' src='./true.png'><div class='truetxt'><p class='jinchang'>进场成功</p><p class='riqi' id='dateTime01'></p></div>";
-
-                    setInterval(function () {
-                        const dt = document.getElementById('dateTime01');
-                        if (dt) {
-                            dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm');
-                        }
-                    }, 1000);
-                }
-            </script>
-
             <div id="dateTime3">00:00</div>
-
-            <script>
-                // === RESET ĐỒNG HỒ KHI NHẤN 7 LẦN TRONG 5 GIÂY ===
-
-                // Khởi tạo startTime từ localStorage hoặc hiện tại
-                let startTime = localStorage.getItem("startTime");
-                if (!startTime) {
-                    startTime = Date.now();
-                    localStorage.setItem("startTime", startTime);
-                } else {
-                    startTime = parseInt(startTime);
-                }
-
-                // Hàm cập nhật đồng hồ mỗi giây
-                setInterval(function () {
-                    let diff = Math.floor((Date.now() - startTime) / 1000); // giây
-                    let hrs = Math.floor(diff / 3600);
-                    let mins = Math.floor((diff % 3600) / 60);
-                    let secs = diff % 60;
-
-                    // Cập nhật giao diện
-                    if (hrs > 0) {
-                        document.getElementById('dateTime3').innerHTML =
-                            hrs + ':' +
-                            (mins < 10 ? '0' : '') + mins + ':' +
-                            (secs < 10 ? '0' : '') + secs;
-                    } else {
-                        document.getElementById('dateTime3').innerHTML =
-                            (mins < 10 ? '0' : '') + mins + ':' +
-                            (secs < 10 ? '0' : '') + secs;
-                    }
-                }, 1000);
-
-                // Ghi lại các lần click để kiểm tra spam trong 5s
-                let clickTimestamps = [];
-
-                window.addEventListener('DOMContentLoaded', function () {
-                    const reloadLink = document.querySelector('.shuaxinerweima');
-                    if (reloadLink) {
-                        reloadLink.addEventListener('click', function (e) {
-                            e.preventDefault(); // ❌ Không reload trang
-
-                            const now = Date.now();
-                            // Lọc các click chỉ trong vòng 5 giây
-                            clickTimestamps = clickTimestamps.filter(ts => now - ts < 5000);
-                            clickTimestamps.push(now);
-
-                            // 🌟 ĐÃ SỬA: Yêu cầu 7 lần nhấn để reset
-                            if (clickTimestamps.length >= 7) { 
-                                // ✅ Reset thời gian
-                                console.log("Đã click 7 lần 刷新二维码 → 重置计时器");
-
-                                startTime = Date.now();
-                                localStorage.setItem("startTime", startTime);
-                                clickTimestamps = []; // reset bộ đếm
-                            }
-                        });
-                    }
-                });
-            </script>
         </div>
     </div>
 
@@ -157,15 +53,80 @@
     </div>
 </div>
 
-<div id="ai-assist-root"></div>
-
 <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').then(() => {
-            console.log("Service Worker Registered v3");
-        });
+    // 1. Định dạng ngày giờ
+    Date.prototype.format = function (fmt) {
+        var o = {
+            "y+": this.getFullYear(),
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
     }
-</script>
 
+    // 2. Cập nhật ngày giờ hệ thống liên tục
+    setInterval(function () {
+        const dt = document.getElementById('dateTime00');
+        if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
+    }, 1000);
+
+    // 3. LOGIC NHẤN 5 LẦN ĐỂ HIỆN DẤU TÍCH
+    let successClicks = [];
+    document.getElementById('trigger-success').addEventListener('click', function() {
+        const now = Date.now();
+        successClicks = successClicks.filter(ts => now - ts < 3000); // Reset nếu quá 3 giây
+        successClicks.push(now);
+
+        if (successClicks.length >= 5) {
+            changetxt();
+            successClicks = []; 
+        }
+    });
+
+    function changetxt() {
+        document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
+        // Ẩn nút làm mới
+        document.getElementById('neirong1').style.display = "none";
+        // Chuyển QR thành dấu tích
+        document.getElementById('neirong').innerHTML = "<img class='true' src='./true.png'><div class='truetxt'><p class='jinchang'>进场成功</p><p class='riqi' id='dateTime01'></p></div>";
+
+        setInterval(function () {
+            const dt = document.getElementById('dateTime01');
+            if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm');
+        }, 1000);
+    }
+
+    // 4. LOGIC RESET ĐỒNG HỒ KHI NHẤN 3 LẦN VÀO NÚT LÀM MỚI
+    let startTime = localStorage.getItem("startTime") || Date.now();
+    localStorage.setItem("startTime", startTime);
+
+    setInterval(function () {
+        let diff = Math.floor((Date.now() - startTime) / 1000);
+        let hrs = Math.floor(diff / 3600);
+        let mins = Math.floor((diff % 3600) / 60);
+        let secs = diff % 60;
+        let timeStr = (hrs > 0 ? hrs + ':' : '') + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+        document.getElementById('dateTime3').innerHTML = timeStr;
+    }, 1000);
+
+    let reloadClicks = [];
+    document.querySelector('.shuaxinerweima').addEventListener('click', function (e) {
+        e.preventDefault();
+        const now = Date.now();
+        reloadClicks = reloadClicks.filter(ts => now - ts < 5000);
+        reloadClicks.push(now);
+        if (reloadClicks.length >= 3) {
+            startTime = Date.now();
+            localStorage.setItem("startTime", startTime);
+            reloadClicks = [];
+        }
+    });
+</script>
 </body>
 </html>
