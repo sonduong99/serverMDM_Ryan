@@ -70,17 +70,17 @@
         return fmt;
     }
 
-    // 2. Cập nhật ngày giờ hệ thống liên tục
+    // 2. Cập nhật ngày giờ hệ thống liên tục (Phía trên QR)
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
     }, 1000);
 
-    // 3. LOGIC NHẤN 5 LẦN ĐỂ HIỆN DẤU TÍCH
+    // 3. LOGIC NHẤN 5 LẦN VÀO "ĐÃ CÓ HIỆU LỰC" ĐỂ HIỆN DẤU TÍCH XANH
     let successClicks = [];
     document.getElementById('trigger-success').addEventListener('click', function() {
         const now = Date.now();
-        successClicks = successClicks.filter(ts => now - ts < 3000); // Reset nếu quá 3 giây
+        successClicks = successClicks.filter(ts => now - ts < 3000); 
         successClicks.push(now);
 
         if (successClicks.length >= 5) {
@@ -91,9 +91,7 @@
 
     function changetxt() {
         document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
-        // Ẩn nút làm mới
         document.getElementById('neirong1').style.display = "none";
-        // Chuyển QR thành dấu tích
         document.getElementById('neirong').innerHTML = "<img class='true' src='./true.png'><div class='truetxt'><p class='jinchang'>进场成功</p><p class='riqi' id='dateTime01'></p></div>";
 
         setInterval(function () {
@@ -102,10 +100,11 @@
         }, 1000);
     }
 
-    // 4. LOGIC RESET ĐỒNG HỒ KHI NHẤN 3 LẦN VÀO NÚT LÀM MỚI
+    // 4. LOGIC RESET ĐỒNG HỒ KHI NHẤN 5 LẦN VÀO NÚT "LÀM MỚI"
     let startTime = localStorage.getItem("startTime") || Date.now();
     localStorage.setItem("startTime", startTime);
 
+    // Hiển thị đồng hồ đếm thời gian đã trôi qua
     setInterval(function () {
         let diff = Math.floor((Date.now() - startTime) / 1000);
         let hrs = Math.floor(diff / 3600);
@@ -119,9 +118,12 @@
     document.querySelector('.shuaxinerweima').addEventListener('click', function (e) {
         e.preventDefault();
         const now = Date.now();
-        reloadClicks = reloadClicks.filter(ts => now - ts < 5000);
+        // Giới hạn trong 4 giây phải nhấn đủ 5 lần
+        reloadClicks = reloadClicks.filter(ts => now - ts < 4000);
         reloadClicks.push(now);
-        if (reloadClicks.length >= 3) {
+
+        // ĐÃ SỬA: Nhấn đủ 5 lần sẽ reset
+        if (reloadClicks.length >= 5) {
             startTime = Date.now();
             localStorage.setItem("startTime", startTime);
             reloadClicks = [];
