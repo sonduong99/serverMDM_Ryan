@@ -1,70 +1,88 @@
-<style>
-    /* 1. GIỮ NGUYÊN FONT CHỮ TOÀN TRANG */
-    * {
-        font-family: 'Noto Sans', sans-serif !important;
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Noto Sans', sans-serif !important; box-sizing: border-box; }
+        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; margin: 0; padding: 0; }
+        
+        .zhengti { width: 100%; text-align: center; }
+        .juzuo1 { text-align: left; padding: 1rem; font-size: 1.1rem; color: #333; }
+        .saomatishi { background: #ffc526 !important; color: #fff !important; padding: 10px 0; font-weight: 400; }
 
-    /* 2. CỐ ĐỊNH KÍCH THƯỚC KHUNG CHỨA QR */
-    #neirong {
-        width: 210px;  /* Chiều rộng cố định giống mã QR mẫu */
-        height: 210px; /* Chiều cao cố định */
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    /* 3. ĐẢM BẢO ẢNH (DÙ LÀ QR HAY DẤU TÍCH) ĐỀU FILL ĐẦY KHUNG */
-    .ewm {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: contain; /* Giữ nguyên tỉ lệ ảnh, không bị méo */
-        display: block;
-    }
-</style>
-
-<script>
-    // 1. CẬP NHẬT THỜI GIAN (Giữ nguyên font và định dạng)
-    function update() {
-        const d = new Date();
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const timePart = d.toTimeString().split(' ')[0]; 
-        document.getElementById('dateTime00').innerText = `${year}-${month}-${day} ${timePart}`;
-    }
-    setInterval(update, 1000); 
-    update();
-
-    // 2. LOGIC NHẤN 5 LẦN & GIỮ KÍCH THƯỚC
-    let count = 0;
-    const btn = document.querySelector('.shuaxinerweima');
-    const imgElement = document.getElementById('displayImage');
-    const fileTich = "./true.png"; // Đã sửa tên file thành true.png
-
-    // Hàm thực thi đổi ảnh
-    function applyVerified() {
-        imgElement.src = fileTich;
-        // Đảm bảo khi đổi ảnh không bị nhảy font hay size
-        imgElement.style.width = "100%";
-        imgElement.style.height = "100%";
-    }
-
-    btn.addEventListener('click', function(e) {
-        e.preventDefault(); 
-        count++;
-
-        if (count === 5) {
-            applyVerified();
-            localStorage.setItem('status', 'verified');
+        /* GIỮ KÍCH THƯỚC QR CỐ ĐỊNH */
+        #neirong {
+            width: 215px; 
+            height: 215px; 
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
         }
-    });
 
-    // 3. DUY TRÌ TRẠNG THÁI KHI LOAD TRANG
-    window.addEventListener('load', function() {
-        if (localStorage.getItem('status') === 'verified') {
-            applyVerified();
+        .ewm { width: 100%; height: 100%; object-fit: contain; }
+
+        #dateTime00 { color: #000; font-weight: 500; padding-top: 2rem; font-size: 1.2rem; }
+        .shuaxinerweima { 
+            text-decoration: none; color: #000 !important; 
+            font-size: 3.3rem; display: block; margin-top: 1rem;
         }
-    });
-</script>
+    </style>
+</head>
+<body>
+    <div class="zhengti">
+        <div class="juzuo1">V25051817 (Pham Son Duong)</div>
+        <div class="saomatishi">将二维码对准扫描器扫码进出场</div>
+        
+        <div class="juzhong erweima" style="background: #fff; margin: 15px; border-radius: 10px; padding-bottom: 20px;">
+            <div id="dateTime00"></div>
+            <div id="neirong">
+                <img class="ewm" id="displayImage" src="./ewm.gif">
+            </div>
+            <div id="neirong1">
+                <a class="shuaxinerweima" href="javascript:void(0)">刷新二维码</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hàm cập nhật thời gian
+        function updateTime() {
+            const d = new Date();
+            const timeStr = d.getFullYear() + '-' + 
+                            String(d.getMonth() + 1).padStart(2, '0') + '-' + 
+                            String(d.getDate()).padStart(2, '0') + ' ' + 
+                            d.toTimeString().split(' ')[0];
+            const el = document.getElementById('dateTime00');
+            if(el) el.innerText = timeStr;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Logic nhấn 5 lần
+        let count = 0;
+        const img = document.getElementById('displayImage');
+        const btn = document.querySelector('.shuaxinerweima');
+
+        function setTrue() {
+            if(img) img.src = "./true.png";
+            localStorage.setItem('verified', '1');
+        }
+
+        if(localStorage.getItem('verified') === '1') setTrue();
+
+        if(btn) {
+            btn.addEventListener('click', function() {
+                count++;
+                if(count === 5) {
+                    setTrue();
+                    count = 0;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
