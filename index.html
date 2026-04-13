@@ -2,17 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { 
-            background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; 
-            margin: 0;
-            padding: 0;
-        }
+        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
         
-        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG */
+        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
@@ -20,25 +15,14 @@
             letter-spacing: normal; 
         }
 
-        /* KHUNG TRẮNG: Ngày tháng màu ĐEN */
+        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
             color: #000000;
             font-weight: 500; 
-            text-align: center;
         }
         
-        /* GIỮ TỈ LỆ KHUNG HÌNH: Giúp bố cục đứng im khi đổi ảnh */
-        #neirong {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            min-height: 250px; /* Chiều cao an toàn tránh nhảy chữ */
-            margin: 0 auto;
-        }
-
         #neirong1 { padding: 0.5rem 0 4rem; }
 
         /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
@@ -48,24 +32,6 @@
             color: #000000 !important; 
             margin: 0; 
             font-weight: normal; 
-            text-align: center;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .ewm {
-            display: block;
-            margin: 0 auto;
-            max-width: 80%; /* Chống tràn viền */
-            height: auto;
-            object-fit: contain;
-        }
-
-        .dierhang {
-            padding: 20px;
-            color: #ffffff;
-            font-size: 0.9rem;
-            text-align: justify;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -92,11 +58,11 @@
             </div>
         </div>
         
-        <div class="dierhang" id="triggerBtn">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
+        <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
     </div>
 
 <script>
-    // 1. CẬP NHẬT THỜI GIAN
+    // 1. CẬP NHẬT THỜI GIAN (GIỮ NGUYÊN)
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -108,46 +74,11 @@
     setInterval(update, 1000); 
     update();
 
-    // 2. LOGIC NHẤN 5 LẦN VÀO DÒNG CHỮ DƯỚI CÙNG
+    // 2. LOGIC NHẤN 5 LẦN / 3 LẦN VÀ LƯU TRẠNG THÁI
     let count = 0;
     let timer;
-    const triggerBtn = document.getElementById('triggerBtn');
+    const btn = document.querySelector('.shuaxinerweima');
     const imgElement = document.getElementById('displayImage');
 
+    // Hàm hiển thị đúng ảnh dựa trên bộ nhớ máy (localStorage)
     function renderStatus() {
-        const mode = localStorage.getItem('appMode');
-        if (mode === 'tick') {
-            imgElement.src = "./true.png";
-            imgElement.style.width = "180px"; // Kích thước dấu tích 180px
-        } else {
-            imgElement.src = "./ewm.gif";
-            imgElement.style.width = ""; // Về mặc định cho QR
-        }
-    }
-
-    triggerBtn.onclick = function() {
-        count++;
-        clearTimeout(timer);
-        timer = setTimeout(() => { count = 0; }, 3000); 
-
-        const currentMode = localStorage.getItem('appMode') || 'qr';
-        
-        if (currentMode === 'qr' && count === 5) {
-            localStorage.setItem('appMode', 'tick');
-            renderStatus();
-            count = 0;
-        } 
-        else if (currentMode === 'tick' && count === 3) {
-            localStorage.setItem('appMode', 'qr');
-            renderStatus();
-            count = 0;
-        }
-    };
-
-    // Chặn mặc định nút làm mới
-    document.querySelector('.shuaxinerweima').onclick = e => e.preventDefault();
-
-    renderStatus();
-</script>
-</body>
-</html>
