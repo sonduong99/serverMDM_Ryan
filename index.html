@@ -7,7 +7,6 @@
     <style>
         body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
         
-        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
@@ -15,7 +14,6 @@
             letter-spacing: normal; 
         }
 
-        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
@@ -23,9 +21,16 @@
             font-weight: 500; 
         }
         
+        /* Cố định chiều cao vùng chứa ảnh để không bị nhảy chữ bên dưới */
+        #neirong {
+            height: 180px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         #neirong1 { padding: 0.5rem 0 4rem; }
 
-        /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
@@ -34,6 +39,12 @@
             font-weight: normal; 
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        .ewm {
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -62,7 +73,6 @@
     </div>
 
 <script>
-    // 1. CẬP NHẬT THỜI GIAN
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -74,7 +84,6 @@
     setInterval(update, 1000); 
     update();
 
-    // 2. LOGIC CHUYỂN ĐỔI VÀ LƯU TRẠNG THÁI (GIỮ NGUYÊN KÍCH THƯỚC GỐC)
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -84,8 +93,12 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
+            // Kích thước dấu tích nhỏ hơn
+            imgElement.style.width = "160px"; 
         } else {
             imgElement.src = "./ewm.gif";
+            // Kích thước mã QR (giữ theo style cũ của bạn)
+            imgElement.style.width = "180px"; 
         }
     }
 
@@ -93,21 +106,16 @@
         e.preventDefault();
         count++;
 
-        // Reset bộ đếm nếu quá 3 giây không nhấn tiếp
         clearTimeout(timer);
-        timer = setTimeout(() => {
-            count = 0;
-        }, 3000);
+        timer = setTimeout(() => { count = 0; }, 3000);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
 
-        // Đang ở QR -> Nhấn đủ 5 lần chuyển sang Tích
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
         } 
-        // Đang ở Tích -> Nhấn đủ 3 lần quay lại QR
         else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
@@ -115,7 +123,6 @@
         }
     };
 
-    // Kiểm tra trạng thái ngay khi mở ứng dụng
     renderStatus();
 </script>
 </body>
