@@ -2,10 +2,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
+        body { 
+            background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; 
+            margin: 0;
+            padding: 0;
+        }
         
         .saomatishi { 
             background: #ffc526 !important; 
@@ -19,15 +24,15 @@
             margin-bottom: 1rem; 
             color: #000000;
             font-weight: 500; 
+            text-align: center;
         }
         
-        /* ĐÂY LÀ PHẦN QUAN TRỌNG: Giữ vùng chứa ảnh cố định */
+        /* GIỮ KHUNG HÌNH ĐỨNG IM TUYỆT ĐỐI */
         #neirong {
+            height: 280px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Giữ chiều cao tối thiểu bằng với mã QR gốc của bạn */
-            min-height: 250px; 
         }
 
         #neirong1 { padding: 0.5rem 0 4rem; }
@@ -38,6 +43,7 @@
             color: #000000 !important; 
             margin: 0; 
             font-weight: normal; 
+            text-align: center;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -46,13 +52,22 @@
             display: block;
             margin: 0 auto;
         }
+
+        .dierhang {
+            padding: 20px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            text-align: justify;
+        }
     </style>
 </head>
 <body>
     <p><br><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
+        
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
+        
         <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
         
         <div class="juzhong erweima zise">
@@ -67,7 +82,7 @@
             </div>
         </div>
         
-        <div class="dierhang">尊敬的员工您好，您 đã vào khu vực mật của doanh nghiệp, vì lý do an ninh, camera điện thoại sẽ bị cấm, cảm ơn sự hợp tác.</div>
+        <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
     </div>
 
 <script>
@@ -91,13 +106,11 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // Chỉ thu nhỏ kích thước ảnh dấu tích xuống 160px
-            imgElement.style.width = "160px";
+            imgElement.style.width = "160px"; // Dấu tích 160px
             imgElement.style.height = "auto";
         } else {
             imgElement.src = "./ewm.gif";
-            // QR quay lại kích thước mặc định (xóa style đè lên)
-            imgElement.style.width = "";
+            imgElement.style.width = ""; // Quay về gốc của QR
             imgElement.style.height = "";
         }
     }
@@ -113,7 +126,8 @@
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
-        } else if (currentMode === 'tick' && count === 3) {
+        } 
+        else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
             count = 0;
