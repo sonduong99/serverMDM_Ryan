@@ -5,84 +5,66 @@
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        * { font-family: 'Noto Sans', sans-serif !important; box-sizing: border-box; }
-        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; margin: 0; padding: 0; }
+        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
         
-        .zhengti { width: 100%; text-align: center; }
-        .juzuo1 { text-align: left; padding: 1rem; font-size: 1.1rem; color: #333; }
-        .saomatishi { background: #ffc526 !important; color: #fff !important; padding: 10px 0; font-weight: 400; }
-
-        /* GIỮ KÍCH THƯỚC QR CỐ ĐỊNH */
-        #neirong {
-            width: 215px; 
-            height: 215px; 
-            margin: 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #fff;
+        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
+        .saomatishi { 
+            background: #ffc526 !important; 
+            color: #ffffff !important; /* Đã đổi lại màu TRẮNG */
+            font-weight: 400 !important; 
+            letter-spacing: normal; 
         }
 
-        .ewm { width: 100%; height: 100%; object-fit: contain; }
+        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
+        #dateTime00 { 
+            padding-top: 4rem; 
+            margin-bottom: 1rem; 
+            color: #000000;
+            font-weight: 500; 
+        }
+        
+        #neirong1 { padding: 0.5rem 0 4rem; }
 
-        #dateTime00 { color: #000; font-weight: 500; padding-top: 2rem; font-size: 1.2rem; }
+        /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
         .shuaxinerweima { 
-            text-decoration: none; color: #000 !important; 
-            font-size: 3.3rem; display: block; margin-top: 1rem;
+            text-decoration: none; 
+            display: block; 
+            color: #000000 !important; 
+            margin: 0; 
+            font-weight: normal; 
         }
     </style>
 </head>
 <body>
+    <p><br><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
-        <div class="saomatishi">将二维码对准扫描器扫码进出场</div>
         
-        <div class="juzhong erweima" style="background: #fff; margin: 15px; border-radius: 10px; padding-bottom: 20px;">
-            <div id="dateTime00"></div>
-            <div id="neirong">
-                <img class="ewm" id="displayImage" src="./ewm.gif">
-            </div>
+        <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
+        
+        <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
+        
+        <div class="juzhong erweima zise">
+            <div id="dateTime00" class="juzuo2"></div>
+            <div id="neirong"><img class="ewm" src="./ewm.gif"></div>
             <div id="neirong1">
-                <a class="shuaxinerweima" href="javascript:void(0)">刷新二维码</a>
+                <a class="shuaxinerweima juzhong footsty" style="font-size: 3.3rem;" href="#">刷新二维码</a>
             </div>
         </div>
+        
+        <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
     </div>
 
-    <script>
-        // Hàm cập nhật thời gian
-        function updateTime() {
-            const d = new Date();
-            const timeStr = d.getFullYear() + '-' + 
-                            String(d.getMonth() + 1).padStart(2, '0') + '-' + 
-                            String(d.getDate()).padStart(2, '0') + ' ' + 
-                            d.toTimeString().split(' ')[0];
-            const el = document.getElementById('dateTime00');
-            if(el) el.innerText = timeStr;
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        // Logic nhấn 5 lần
-        let count = 0;
-        const img = document.getElementById('displayImage');
-        const btn = document.querySelector('.shuaxinerweima');
-
-        function setTrue() {
-            if(img) img.src = "./true.png";
-            localStorage.setItem('verified', '1');
-        }
-
-        if(localStorage.getItem('verified') === '1') setTrue();
-
-        if(btn) {
-            btn.addEventListener('click', function() {
-                count++;
-                if(count === 5) {
-                    setTrue();
-                    count = 0;
-                }
-            });
-        }
-    </script>
+<script>
+    function update() {
+        const d = new Date();
+        const datePart = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        const timePart = d.toTimeString().split(' ')[0]; 
+        document.getElementById('dateTime00').innerText = `${datePart} ${timePart}`;
+    }
+    setInterval(update, 1000); 
+    update();
+    document.querySelector('.shuaxinerweima').onclick = e => e.preventDefault();
+</script>
 </body>
 </html>
