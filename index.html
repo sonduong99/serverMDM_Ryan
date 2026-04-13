@@ -30,30 +30,35 @@
             font-size: 1.1rem;
         }
 
-        /* THANH VÀNG - Tiêu đề */
+        /* 1. THANH VÀNG (Tiêu đề) - CHỈ BO GÓC TRÊN */
         .saomatishi {
-            background: #f1c40f; /* Màu vàng minh họa, bạn có thể chỉnh theo style.css */
+            /* Màu vàng bạn có thể chỉnh lại cho đúng theo style.css của bạn, đây là màu minh họa */
+            background: #f1c40f; 
             width: 90%;
             max-width: 380px;
             padding: 15px 0;
             text-align: center;
-            border-radius: 12px 12px 0 0; /* Bo góc trên, phẳng góc dưới để nối */
+            /* ĐÂY LÀ CHỖ SỬA: Chỉ bo 2 góc TRÊN, 2 góc dưới để phẳng */
+            border-radius: 12px 12px 0 0; 
             margin-bottom: 0 !important; /* QUAN TRỌNG: Triệt tiêu khoảng cách dưới */
         }
 
-        /* KHUNG TRẮNG - Chứa QR */
+        /* 2. KHUNG TRẮNG (Chứa QR) - CHỈ BO GÓC DƯỚI */
         .erweima {
-            margin-top: 0 !important; /* QUAN TRỌNG: Nối khít với thanh vàng phía trên */
+            /* QUAN TRỌNG: Nối khít với thanh vàng phía trên */
+            margin-top: 0 !important; 
             margin-bottom: 40px !important; 
             padding-bottom: 30px !important; 
             background: #fff;
-            border-radius: 0 0 12px 12px; /* Phẳng góc trên để nối, bo góc dưới cho đẹp */
+            /* ĐÂY LÀ CHỖ SỬA: Chỉ bo 2 góc DƯỚI, 2 góc trên để phẳng */
+            border-radius: 0 0 12px 12px; 
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 90%;
             max-width: 380px;
-            border-top: 1px solid #eee; /* Đường kẻ mờ ngăn cách nhẹ nếu muốn */
+            /* Thêm đường kẻ mờ ngăn cách nhẹ nếu muốn, hoặc xóa dòng này đi */
+            border-top: 1px solid #eee; 
         }
 
         .shuaxinerweima {
@@ -99,7 +104,7 @@
     </div>
 
     <div class="dierhang">
-        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
+        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。
     </div>
 </div>
 
