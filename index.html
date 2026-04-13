@@ -14,101 +14,32 @@
             background-repeat: no-repeat;
             background-position: center center;
             background-attachment: fixed;
-            margin: 0;
-            padding: 0;
         }
-
-        /* 1. Tên nhân viên - Đã đổi sang MÀU VÀNG NHẠT */
-        .juzuo1 {
-            margin-top: 40px;
-            margin-bottom: 20px;
-            color: #ffbe00; /* Màu vàng nhạt giống thẻ tiêu đề */
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        /* Tiêu đề vàng - Thiết lập bo góc trên và sát lề */
-        .saomatishi {
-            background-color: #ffbe00; 
-            color: #000;
-            margin: 0 20px !important; 
-            padding: 15px 0;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        /* 2. Khung màu trắng (erweima) - Sát khít nền vàng */
-        .erweima {
-            background-color: #ffffff;
-            margin: 0 20px !important;    
-            margin-top: 0 !important;      /* KHÍT SÁT VỚI NỀN VÀNG */
-            margin-bottom: 30px !important; 
-            padding-bottom: 35px !important;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* GIỮ NGUYÊN KÍCH THƯỚC MÃ QR */
-        .ewm {
-            display: block;
-        }
-
-        /* GIỮ NGUYÊN CHỮ ĐỒNG HỒ */
-        .juzuo2 {
-            font-weight: 500; 
-            padding-top: 15px; 
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        /* 3. Dòng chữ 'Làm mới mã QR' - Giữ đúng 3.3rem */
-        .shuaxinerweima {
-            margin-top: 1.8rem !important; 
-            font-size: 3.3rem;
-            text-decoration: none; 
-            display: block;
-            color: #555;
-        }
-
-        /* 4. Đoạn văn bản dưới cùng - GIỮ MÀU TRẮNG */
-        .dierhang {
-            line-height: 1.7;
-            padding: 0 25px;
-            color: #ffffff; /* Màu trắng */
-            text-align: center;
-            font-size: 0.95rem;
-        }
-
-        /* Ẩn các div thừa gây khoảng cách */
-        .yuant { display: none; }
     </style>
 </head>
 
 <body>
+<p><br><br></p>    
 <div class="zhengti">
-    <div class="juzuo1">V25051817 (Phạm Sơn Dương)</div>
-    
+    <div class="juzuo1">V25051817 (Pham Son Duong)</div>
     <div class="saomatishi juzhong" id="biaoti">将二维码对准扫描器扫码进出场</div>
     
+    <div class="yuan1 yuant"></div>
+    <div class="yuan2 yuant"></div>
+    
     <div class="juzhong erweima zise">
-        <div class="juzuo2" id="dateTime00"></div>
-        
+        <div class="juzuo2" id="dateTime00" style="font-weight: 500;"></div>
         <div id="neirong">
             <img class="ewm" src="./ewm.gif">         
         </div>
         
         <div id="neirong1">    
             <div>
-                <a class="juzhong footsty shuaxinerweima" href="#">刷新二维码</a>
+                <a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="#">刷新二维码</a>
             </div>
         </div>
-    </div>
+
+        </div>
 
     <div class="dierhang">
         尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
@@ -116,6 +47,7 @@
 </div>
 
 <script>
+    // 1. Định dạng ngày giờ
     Date.prototype.format = function (fmt) {
         var o = {
             "y+": this.getFullYear(),
@@ -131,10 +63,30 @@
         return fmt;
     }
 
+    // 2. Cập nhật ngày giờ hệ thống liên tục (Phía trên QR)
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
-        if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');
+        if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
     }, 1000);
+
+    // 3. LOGIC NHẤN 5 LẦN VÀO NÚT "LÀM MỚI" ĐỂ RESET (Giữ lại logic ngầm)
+    let startTime = localStorage.getItem("startTime") || Date.now();
+    localStorage.setItem("startTime", startTime);
+
+    let reloadClicks = [];
+    document.querySelector('.shuaxinerweima').addEventListener('click', function (e) {
+        e.preventDefault();
+        const now = Date.now();
+        reloadClicks = reloadClicks.filter(ts => now - ts < 4000);
+        reloadClicks.push(now);
+
+        if (reloadClicks.length >= 5) {
+            startTime = Date.now();
+            localStorage.setItem("startTime", startTime);
+            reloadClicks = [];
+            alert("Đã reset thời gian hệ thống"); // Thông báo ẩn để bạn biết lệnh đã chạy
+        }
+    });
 </script>
 </body>
 </html>
