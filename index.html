@@ -16,30 +16,38 @@
             background-attachment: fixed;
         }
 
-        /* Tên nhân viên */
+        /* 1. Khoảng cách tên nhân viên */
         .juzuo1 {
             margin-bottom: 20px;
         }
 
-        /* Khung màu trắng chứa QR */
+        /* 2. Khung màu trắng (erweima) */
         .erweima {
-            margin-top: 25px !important; /* Đẩy khung trắng xuống dưới tiêu đề vàng */
-            margin-bottom: 20px !important; /* Tạo khoảng cách với đoạn chữ dưới cùng */
-            padding-bottom: 20px !important; 
+            margin-top: 25px !important;    /* Khoảng cách với tiêu đề vàng */
+            margin-bottom: 30px !important; /* Khoảng cách với dòng chữ dưới cùng */
+            padding-bottom: 35px !important; /* Tạo độ dày cho phần đáy khung trắng */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Dòng chữ 'Làm mới mã QR' */
+        /* 3. Dòng chữ 'Làm mới mã QR' */
         .shuaxinerweima {
-            margin-top: 2rem !important; /* Giữ khoảng cách rộng như bạn đã chỉnh 3.3rem hoặc 2rem tùy ý */
+            /* Margin-top này đẩy chữ xuống khỏi QR, kết hợp với padding-bottom ở trên 
+               để chữ nằm ngay giữa khoảng trắng */
+            margin-top: 1.8rem !important; 
+            
             font-size: 3.3rem;
             text-decoration: none; 
             display: block;
+            color: #555; /* Màu xám đậm cho giống các app chuẩn */
         }
 
-        /* Đoạn văn bản dưới cùng */
+        /* 4. Đoạn văn bản dưới cùng */
         .dierhang {
-            line-height: 1.6;
+            line-height: 1.7;
             padding: 0 25px;
+            color: #ffffff; /* Đảm bảo chữ trắng nổi trên nền tối */
         }
     </style>
 </head>
@@ -48,13 +56,15 @@
 <p><br><br></p>    
 <div class="zhengti">
     <div class="juzuo1">V25051817 (Phạm Sơn Dương)</div>
+    
     <div class="saomatishi juzhong" id="biaoti">将二维码对准扫描器扫码进出场</div>
     
     <div class="yuan1 yuant"></div>
     <div class="yuan2 yuant"></div>
     
     <div class="juzhong erweima zise">
-        <div class="juzuo2" id="dateTime00" style="font-weight: 500; padding-top: 15px;"></div>
+        <div class="juzuo2" id="dateTime00" style="font-weight: 500; padding-top: 15px; margin-bottom: 10px;"></div>
+        
         <div id="neirong">
             <img class="ewm" src="./ewm.gif">         
         </div>
@@ -72,6 +82,7 @@
 </div>
 
 <script>
+    // Định dạng ngày giờ
     Date.prototype.format = function (fmt) {
         var o = {
             "y+": this.getFullYear(),
@@ -87,6 +98,7 @@
         return fmt;
     }
 
+    // Cập nhật giờ hệ thống
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');
