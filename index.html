@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; margin: 0; }
+        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
         
+        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
@@ -15,6 +15,7 @@
             letter-spacing: normal; 
         }
 
+        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
@@ -22,15 +23,9 @@
             font-weight: 500; 
         }
         
-        #neirong {
-            height: 200px; /* Cố định chiều cao khung chứa để không bị nhảy chữ khi đổi ảnh */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         #neirong1 { padding: 0.5rem 0 4rem; }
 
+        /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
@@ -40,18 +35,15 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
-
-        .ewm {
-            height: auto;
-            transition: width 0.2s ease;
-        }
     </style>
 </head>
 <body>
     <p><br><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
+        
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
+        
         <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
         
         <div class="juzhong erweima zise">
@@ -70,6 +62,7 @@
     </div>
 
 <script>
+    // 1. CẬP NHẬT THỜI GIAN
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -81,6 +74,7 @@
     setInterval(update, 1000); 
     update();
 
+    // 2. LOGIC CHUYỂN ĐỔI VÀ LƯU TRẠNG THÁI (GIỮ NGUYÊN KÍCH THƯỚC GỐC)
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -90,27 +84,30 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // CHỈNH DẤU TÍCH NHỎ LẠI TẠI ĐÂY
-            imgElement.style.width = "150px"; 
         } else {
             imgElement.src = "./ewm.gif";
-            // CHỈNH MÃ QR THEO Ý BẠN
-            imgElement.style.width = "180px"; 
         }
     }
 
     btn.onclick = function(e) {
         e.preventDefault();
         count++;
+
+        // Reset bộ đếm nếu quá 3 giây không nhấn tiếp
         clearTimeout(timer);
-        timer = setTimeout(() => { count = 0; }, 3000);
+        timer = setTimeout(() => {
+            count = 0;
+        }, 3000);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
+
+        // Đang ở QR -> Nhấn đủ 5 lần chuyển sang Tích
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
         } 
+        // Đang ở Tích -> Nhấn đủ 3 lần quay lại QR
         else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
@@ -118,6 +115,7 @@
         }
     };
 
+    // Kiểm tra trạng thái ngay khi mở ứng dụng
     renderStatus();
 </script>
 </body>
