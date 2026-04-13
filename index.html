@@ -1,108 +1,88 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=GBK">
-    <title>&#8206;</title>
-    <link rel="stylesheet" href="./style.css">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-image: url("./IMG_8622.jpeg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: fixed;
-        }
-
-        /* 1. Khoảng cách tên nhân viên */
-        .juzuo1 {
-            margin-bottom: 20px;
-        }
-
-        /* 2. Khung màu trắng (erweima) */
-        .erweima {
-            margin-top: 25px !important;    /* Khoảng cách với tiêu đề vàng */
-            margin-bottom: 30px !important; /* Khoảng cách với dòng chữ dưới cùng */
-            padding-bottom: 35px !important; /* Tạo độ dày cho phần đáy khung trắng */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* 3. Dòng chữ 'Làm mới mã QR' */
-        .shuaxinerweima {
-            /* Margin-top này đẩy chữ xuống khỏi QR, kết hợp với padding-bottom ở trên 
-               để chữ nằm ngay giữa khoảng trắng */
-            margin-top: 1.8rem !important; 
-            
-            font-size: 3.3rem;
-            text-decoration: none; 
-            display: block;
-            color: #555; /* Màu xám đậm cho giống các app chuẩn */
-        }
-
-        /* 4. Đoạn văn bản dưới cùng */
-        .dierhang {
-            line-height: 1.7;
-            padding: 0 25px;
-            color: #ffffff; /* Đảm bảo chữ trắng nổi trên nền tối */
-        }
-    </style>
-</head>
-
-<body>
-<p><br><br></p>    
-<div class="zhengti">
-    <div class="juzuo1">V25051817 (Phạm Sơn Dương)</div>
-    
-    <div class="saomatishi juzhong" id="biaoti">将二维码对准扫描器扫码进出场</div>
-    
-    <div class="yuan1 yuant"></div>
-    <div class="yuan2 yuant"></div>
-    
-    <div class="juzhong erweima zise">
-        <div class="juzuo2" id="dateTime00" style="font-weight: 500; padding-top: 15px; margin-bottom: 10px;"></div>
-        
-        <div id="neirong">
-            <img class="ewm" src="./ewm.gif">         
-        </div>
-        
-        <div id="neirong1">    
-            <div>
-                <a class="juzhong footsty shuaxinerweima" href="#">刷新二维码</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="dierhang">
-        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
-    </div>
-</div>
-
-<script>
-    // Định dạng ngày giờ
-    Date.prototype.format = function (fmt) {
-        var o = {
-            "y+": this.getFullYear(),
-            "M+": this.getMonth() + 1,
-            "d+": this.getDate(),
-            "h+": this.getHours(),
-            "m+": this.getMinutes(),
-            "s+": this.getSeconds(),
-        };
-        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (var k in o)
-            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        return fmt;
+<style>
+    body {
+        background-image: url("./IMG_8622.jpeg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
     }
 
-    // Cập nhật giờ hệ thống
-    setInterval(function () {
-        const dt = document.getElementById('dateTime00');
-        if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');
-    }, 1000);
-</script>
-</body>
-</html>
+    /* Tiêu đề vàng (Giả định class saomatishi có màu vàng) */
+    .saomatishi {
+        background-color: #f1c40f; /* Màu vàng ví dụ */
+        color: #000;
+        padding: 20px 0;
+        text-align: center;
+        font-weight: bold;
+        /* Bo góc trên của phần vàng */
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        margin: 0 20px; /* Căn lề hai bên cho cân với khung trắng */
+    }
+
+    /* 1. Khoảng cách tên nhân viên */
+    .juzuo1 {
+        margin-bottom: 20px;
+        color: white;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    /* 2. Khung màu trắng (erweima) */
+    .erweima {
+        background-color: #fff;
+        /* Loại bỏ margin-top để sát với phần vàng */
+        margin-top: 0 !important; 
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-bottom: 30px !important;
+        padding-bottom: 35px !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* Bo góc dưới của khung trắng */
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    /* 3. Hiệu ứng nối tiếp (Xử lý các chấm tròn nếu có) */
+    .yuant {
+        background-color: transparent; /* Hoặc màu nền body tùy thiết kế */
+        height: 20px;
+        /* Nếu các thẻ yuan này là hình bán nguyệt nối giữa vàng và trắng: */
+        display: none; /* Tạm ẩn nếu bạn muốn sát hoàn toàn, hoặc chỉnh lại vị trí */
+    }
+
+    /* GIỮ NGUYÊN KÍCH THƯỚC QR VÀ CHỮ ĐỒNG HỒ */
+    #dateTime00 {
+        font-weight: 500;
+        padding-top: 15px;
+        margin-bottom: 10px;
+        font-size: inherit; /* Giữ nguyên size cũ */
+    }
+
+    .ewm {
+        width: 250px; /* Hoặc kích thước gốc của bạn */
+        height: auto;
+    }
+
+    .shuaxinerweima {
+        margin-top: 1.8rem !important; 
+        font-size: 3.3rem;
+        text-decoration: none; 
+        display: block;
+        color: #555;
+    }
+
+    /* 4. Đoạn văn bản dưới cùng */
+    .dierhang {
+        line-height: 1.7;
+        padding: 0 25px;
+        color: #ffffff;
+        text-align: center;
+    }
+
+    .juzhong { text-align: center; }
+</style>
