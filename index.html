@@ -16,7 +16,6 @@
             background: #ffc526 !important; 
             color: #ffffff !important; 
             font-weight: 400 !important; 
-            letter-spacing: normal; 
         }
 
         #dateTime00 { 
@@ -27,12 +26,15 @@
             text-align: center;
         }
         
-        /* GIỮ KHUNG HÌNH ĐỨNG IM TUYỆT ĐỐI */
+        /* KHUNG CHỨA THÔNG MINH: Không ép chiều cao nữa */
         #neirong {
-            height: 280px; 
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
+            margin: 0 auto;
+            /* Tạo khoảng trống tối thiểu để khi đổi ảnh không bị giật lag */
+            min-height: 160px; 
         }
 
         #neirong1 { padding: 0.5rem 0 4rem; }
@@ -41,8 +43,6 @@
             text-decoration: none; 
             display: block; 
             color: #000000 !important; 
-            margin: 0; 
-            font-weight: normal; 
             text-align: center;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
@@ -51,6 +51,10 @@
         .ewm {
             display: block;
             margin: 0 auto;
+            /* Giúp QR không bao giờ vượt quá chiều rộng khung trắng */
+            max-width: 80%; 
+            height: auto;
+            object-fit: contain;
         }
 
         .dierhang {
@@ -65,23 +69,17 @@
     <p><br><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
-        
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
-        
         <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
-        
         <div class="juzhong erweima zise">
             <div id="dateTime00" class="juzuo2"></div>
-            
             <div id="neirong">
                 <img class="ewm" id="displayImage" src="./ewm.gif">
             </div>
-
             <div id="neirong1">
                 <a class="shuaxinerweima juzhong footsty" style="font-size: 3.3rem;" href="#">刷新二维码</a>
             </div>
         </div>
-        
         <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
     </div>
 
@@ -106,12 +104,12 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            imgElement.style.width = "160px"; // Dấu tích 160px
-            imgElement.style.height = "auto";
+            // Ép dấu tích về 160px
+            imgElement.style.width = "160px"; 
         } else {
             imgElement.src = "./ewm.gif";
-            imgElement.style.width = ""; // Quay về gốc của QR
-            imgElement.style.height = "";
+            // Trả mã QR về tự nhiên, không ép kích thước nữa
+            imgElement.style.width = ""; 
         }
     }
 
@@ -120,20 +118,17 @@
         count++;
         clearTimeout(timer);
         timer = setTimeout(() => { count = 0; }, 3000);
-
         const currentMode = localStorage.getItem('appMode') || 'qr';
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
-        } 
-        else if (currentMode === 'tick' && count === 3) {
+        } else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
             count = 0;
         }
     };
-
     renderStatus();
 </script>
 </body>
