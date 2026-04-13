@@ -35,11 +35,10 @@
         
         <div id="neirong1">    
             <div>
-                <a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="#">刷新二维码</a>
+                <a class="juzhong footsty shuaxinerweima" style="margin-top: 6rem; font-size: 3.3rem; display: block;" href="#">刷新二维码</a>
             </div>
         </div>
-
-        </div>
+    </div>
 
     <div class="dierhang">
         尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
@@ -47,7 +46,6 @@
 </div>
 
 <script>
-    // 1. Định dạng ngày giờ
     Date.prototype.format = function (fmt) {
         var o = {
             "y+": this.getFullYear(),
@@ -63,30 +61,10 @@
         return fmt;
     }
 
-    // 2. Cập nhật ngày giờ hệ thống liên tục (Phía trên QR)
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
     }, 1000);
-
-    // 3. LOGIC NHẤN 5 LẦN VÀO NÚT "LÀM MỚI" ĐỂ RESET (Giữ lại logic ngầm)
-    let startTime = localStorage.getItem("startTime") || Date.now();
-    localStorage.setItem("startTime", startTime);
-
-    let reloadClicks = [];
-    document.querySelector('.shuaxinerweima').addEventListener('click', function (e) {
-        e.preventDefault();
-        const now = Date.now();
-        reloadClicks = reloadClicks.filter(ts => now - ts < 4000);
-        reloadClicks.push(now);
-
-        if (reloadClicks.length >= 5) {
-            startTime = Date.now();
-            localStorage.setItem("startTime", startTime);
-            reloadClicks = [];
-            alert("Đã reset thời gian hệ thống"); // Thông báo ẩn để bạn biết lệnh đã chạy
-        }
-    });
 </script>
 </body>
 </html>
