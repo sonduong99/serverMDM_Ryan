@@ -14,65 +14,87 @@
             background-repeat: no-repeat;
             background-position: center center;
             background-attachment: fixed;
+            margin: 0;
         }
 
-        /* 1. Khoảng cách tên nhân viên */
-        .juzuo1 {
-            margin-bottom: 20px;
-        }
-
-        /* 2. Khung màu trắng (erweima) */
-        .erweima {
-            margin-top: 25px !important;    /* Khoảng cách với tiêu đề vàng */
-            margin-bottom: 30px !important; /* Khoảng cách với dòng chữ dưới cùng */
-            padding-bottom: 35px !important; /* Tạo độ dày cho phần đáy khung trắng */
+        .zhengti {
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-top: 40px;
         }
 
-        /* 3. Dòng chữ 'Làm mới mã QR' */
+        .juzuo1 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        /* THANH VÀNG - Tiêu đề */
+        .saomatishi {
+            background: #f1c40f; /* Màu vàng minh họa, bạn có thể chỉnh theo style.css */
+            width: 90%;
+            max-width: 380px;
+            padding: 15px 0;
+            text-align: center;
+            border-radius: 12px 12px 0 0; /* Bo góc trên, phẳng góc dưới để nối */
+            margin-bottom: 0 !important; /* QUAN TRỌNG: Triệt tiêu khoảng cách dưới */
+        }
+
+        /* KHUNG TRẮNG - Chứa QR */
+        .erweima {
+            margin-top: 0 !important; /* QUAN TRỌNG: Nối khít với thanh vàng phía trên */
+            margin-bottom: 40px !important; 
+            padding-bottom: 30px !important; 
+            background: #fff;
+            border-radius: 0 0 12px 12px; /* Phẳng góc trên để nối, bo góc dưới cho đẹp */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 380px;
+            border-top: 1px solid #eee; /* Đường kẻ mờ ngăn cách nhẹ nếu muốn */
+        }
+
         .shuaxinerweima {
-            /* Margin-top này đẩy chữ xuống khỏi QR, kết hợp với padding-bottom ở trên 
-               để chữ nằm ngay giữa khoảng trắng */
             margin-top: 1.8rem !important; 
-            
             font-size: 3.3rem;
             text-decoration: none; 
             display: block;
-            color: #555; /* Màu xám đậm cho giống các app chuẩn */
+            color: #666;
         }
 
-        /* 4. Đoạn văn bản dưới cùng */
         .dierhang {
-            line-height: 1.7;
-            padding: 0 25px;
-            color: #ffffff; /* Đảm bảo chữ trắng nổi trên nền tối */
+            line-height: 1.8;
+            padding: 0 30px;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        #dateTime00 {
+            font-weight: 500;
+            padding-top: 20px;
+            margin-bottom: 10px;
+            color: #333;
         }
     </style>
 </head>
 
 <body>
-<p><br><br></p>    
 <div class="zhengti">
     <div class="juzuo1">V25051817 (Phạm Sơn Dương)</div>
     
     <div class="saomatishi juzhong" id="biaoti">将二维码对准扫描器扫码进出场</div>
     
-    <div class="yuan1 yuant"></div>
-    <div class="yuan2 yuant"></div>
-    
     <div class="juzhong erweima zise">
-        <div class="juzuo2" id="dateTime00" style="font-weight: 500; padding-top: 15px; margin-bottom: 10px;"></div>
+        <div id="dateTime00"></div>
         
         <div id="neirong">
             <img class="ewm" src="./ewm.gif">         
         </div>
         
         <div id="neirong1">    
-            <div>
-                <a class="juzhong footsty shuaxinerweima" href="#">刷新二维码</a>
-            </div>
+            <a class="juzhong footsty shuaxinerweima" href="#">刷新二维码</a>
         </div>
     </div>
 
@@ -82,7 +104,6 @@
 </div>
 
 <script>
-    // Định dạng ngày giờ
     Date.prototype.format = function (fmt) {
         var o = {
             "y+": this.getFullYear(),
@@ -98,7 +119,6 @@
         return fmt;
     }
 
-    // Cập nhật giờ hệ thống
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');
