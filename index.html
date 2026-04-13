@@ -2,53 +2,103 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
+        body { 
+            background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; 
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans', sans-serif;
+        }
         
-        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
+        /* THANH TIÊU ĐỀ */
         .saomatishi { 
             background: #ffc526 !important; 
-            color: #ffffff !important; /* Đã đổi lại màu TRẮNG */
+            color: #ffffff !important; 
             font-weight: 400 !important; 
             letter-spacing: normal; 
+            text-align: center;
+            padding: 10px 0;
         }
 
-        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
+        /* KHUNG TRẮNG CHỨA QR/DẤU TÍCH */
+        .erweima {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 0 auto;
+            width: 90%;
+            border-radius: 10px;
+            text-align: center;
+        }
+
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
             color: #000000;
             font-weight: 500; 
+            text-align: center;
         }
         
+        #neirong {
+            min-height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ewm {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+        }
+
         #neirong1 { padding: 0.5rem 0 4rem; }
 
-        /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
+        /* NÚT BẤM */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
             color: #000000 !important; 
             margin: 0; 
             font-weight: normal; 
+            text-align: center;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .dierhang {
+            padding: 20px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        .juzuo1 {
+            color: white;
+            padding: 15px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <p><br><br></p>    
+    <p><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
         
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
         
-        <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
-        
-        <div class="juzhong erweima zise">
-            <div id="dateTime00" class="juzuo2"></div>
-            <div id="neirong"><img class="ewm" src="./ewm.gif"></div>
+        <div class="juzhong erweima">
+            <div id="dateTime00"></div>
+            
+            <div id="neirong">
+                <img class="ewm" id="qrImage" src="./ewm.gif">
+                <img class="ewm" id="tickImage" src="./true.png" style="display: none;">
+            </div>
+
             <div id="neirong1">
-                <a class="shuaxinerweima juzhong footsty" style="font-size: 3.3rem;" href="#">刷新二维码</a>
+                <a class="shuaxinerweima" style="font-size: 3.3rem;" href="#">刷新二维码</a>
             </div>
         </div>
         
@@ -56,15 +106,67 @@
     </div>
 
 <script>
-    function update() {
+    // 1. CẬP NHẬT THỜI GIAN
+    function updateClock() {
         const d = new Date();
-        const datePart = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
         const timePart = d.toTimeString().split(' ')[0]; 
-        document.getElementById('dateTime00').innerText = `${datePart} ${timePart}`;
+        document.getElementById('dateTime00').innerText = `${year}-${month}-${day} ${timePart}`;
     }
-    setInterval(update, 1000); 
-    update();
-    document.querySelector('.shuaxinerweima').onclick = e => e.preventDefault();
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 2. LOGIC CHUYỂN ĐỔI QR <-> DẤU TÍCH
+    let clickCount = 0;
+    let resetTimer;
+    const TIME_LIMIT = 3000; // 3 giây
+
+    const qrImg = document.getElementById('qrImage');
+    const tickImg = document.getElementById('tickImage');
+
+    // Hàm kiểm tra và hiển thị dựa trên bộ nhớ
+    function applyStatus() {
+        const mode = localStorage.getItem('appMode');
+        if (mode === 'tick') {
+            qrImg.style.display = 'none';
+            tickImg.style.display = 'inline-block';
+        } else {
+            qrImg.style.display = 'inline-block';
+            tickImg.style.display = 'none';
+        }
+    }
+
+    // Xử lý khi nhấn vào nút "刷新二维码"
+    document.querySelector('.shuaxinerweima').addEventListener('click', function(e) {
+        e.preventDefault();
+        clickCount++;
+
+        // Reset bộ đếm nếu quá 3 giây không nhấn tiếp
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+            clickCount = 0;
+        }, TIME_LIMIT);
+
+        const currentMode = localStorage.getItem('appMode') || 'qr';
+
+        // Nếu đang QR -> Nhấn đủ 5 lần sang Dấu tích
+        if (currentMode === 'qr' && clickCount === 5) {
+            localStorage.setItem('appMode', 'tick');
+            applyStatus();
+            clickCount = 0;
+        } 
+        // Nếu đang Dấu tích -> Nhấn đủ 3 lần về QR
+        else if (currentMode === 'tick' && clickCount === 3) {
+            localStorage.setItem('appMode', 'qr');
+            applyStatus();
+            clickCount = 0;
+        }
+    });
+
+    // Chạy kiểm tra ngay khi mở trang
+    applyStatus();
 </script>
 </body>
 </html>
