@@ -16,27 +16,27 @@
             background-attachment: fixed;
         }
 
-        /* Tên nhân viên phía trên cùng */
+        /* Tên nhân viên */
         .juzuo1 {
             margin-bottom: 20px;
         }
 
-        /* Khung màu trắng chứa QR (Lớp 'erweima') */
+        /* Khung màu trắng chứa QR */
         .erweima {
-            margin-top: 25px !important; /* Đẩy khung trắng xuống dưới dòng tiêu đề vàng */
-            margin-bottom: 40px !important; /* Đẩy đoạn văn bản dưới cùng ra xa */
-            padding-bottom: 25px !important; /* Tạo thêm khoảng trống bên dưới chữ 'Làm mới' */
+            margin-top: 25px !important; /* Đẩy khung trắng xuống dưới tiêu đề vàng */
+            margin-bottom: 40px !important; /* Tạo khoảng cách với đoạn chữ dưới cùng */
+            padding-bottom: 20px !important; 
         }
 
-        /* Chỉnh dòng chữ 'Làm mới mã QR' */
+        /* Dòng chữ 'Làm mới mã QR' */
         .shuaxinerweima {
-            margin-top: 1.5rem !important; /* Khoảng cách vừa phải với mã QR */
+            margin-top: 2rem !important; /* Giữ khoảng cách rộng như bạn đã chỉnh 3.3rem hoặc 2rem tùy ý */
             font-size: 3.3rem;
-            text-decoration: none; /* Bỏ gạch chân cho giống mẫu */
+            text-decoration: none; 
             display: block;
         }
 
-        /* Đoạn văn bản bảo mật dưới cùng */
+        /* Đoạn văn bản dưới cùng */
         .dierhang {
             line-height: 1.6;
             padding: 0 25px;
@@ -56,7 +56,7 @@
     <div class="juzhong erweima zise">
         <div class="juzuo2" id="dateTime00" style="font-weight: 500; padding-top: 15px;"></div>
         <div id="neirong">
-            <img class="ewm" src="./ewm.gif" style="width: 250px; height: 250px;">         
+            <img class="ewm" src="./ewm.gif">         
         </div>
         
         <div id="neirong1">    
@@ -72,7 +72,6 @@
 </div>
 
 <script>
-    // 1. Định dạng ngày giờ
     Date.prototype.format = function (fmt) {
         var o = {
             "y+": this.getFullYear(),
@@ -88,7 +87,6 @@
         return fmt;
     }
 
-    // 2. Cập nhật ngày giờ hệ thống (Dạng YYYY-MM-DD để giống ảnh mẫu)
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');
