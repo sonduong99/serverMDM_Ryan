@@ -15,6 +15,62 @@
             background-position: center center;
             background-attachment: fixed;
         }
+
+        /* Tinh chỉnh khung trắng cân đối */
+        .erweima {
+            height: auto !important; 
+            padding-top: 2rem !important; 
+            /* Khoảng cách từ chữ xuống đáy khung */
+            padding-bottom: 3.5rem !important; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 8px;
+        }
+
+        #neirong {
+            margin-top: 1rem;
+            line-height: 0;
+        }
+
+        #neirong img.ewm {
+            width: 23rem;
+            height: 23rem;
+        }
+
+        #neirong1 {
+            /* Khoảng cách từ QR xuống chữ - Đặt bằng padding-bottom (3.5rem) */
+            margin-top: 3.5rem !important; 
+        }
+
+        .shuaxinerweima {
+            font-size: 1.8rem !important; 
+            color: #888 !important;       
+            text-decoration: none;
+            display: block;
+            line-height: 1;
+        }
+
+        /* Style cho dấu tích xanh khi thành công */
+        .true {
+            width: 12rem;
+            height: 12rem;
+            margin-top: 2rem;
+        }
+        .truetxt {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .jinchang {
+            font-size: 2.2rem;
+            color: #2ba667;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        .riqi {
+            font-size: 1.6rem;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -28,17 +84,16 @@
     <div class="yuan2 yuant"></div>
     
     <div class="juzhong erweima zise">
-        <div class="juzuo2" id="dateTime00" style="font-weight: 500;"></div>
+        <div class="juzuo2" id="dateTime00" style="font-weight: 500; font-size: 1.8rem; color: #333;"></div>
+        
         <div id="neirong">
             <img class="ewm" src="./ewm.gif">         
         </div>
         
         <div id="neirong1">    
-            <div>
-                <a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="#">刷新二维码</a>
-            </div>
+            <a class="juzhong footsty shuaxinerweima" href="#">刷新二维码</a>
         </div>
-        </div>
+    </div>
 
     <div class="dierhang">
         尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
@@ -46,7 +101,7 @@
 </div>
 
 <script>
-    // 1. Định dạng ngày giờ hệ thống
+    // 1. Định dạng ngày giờ
     Date.prototype.format = function (fmt) {
         var o = {
             "y+": this.getFullYear(),
@@ -62,43 +117,49 @@
         return fmt;
     }
 
-    // 2. Cập nhật ngày giờ phía trên QR liên tục
+    // 2. Cập nhật ngày giờ phía trên QR
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
     }, 1000);
 
-    // 3. Hàm xử lý trạng thái thành công (khi cần gọi đến)
+    // 3. Logic hiện dấu tích xanh khi thành công
     function changetxt() {
-        const biaoti = document.getElementById('biaoti');
-        const neirong1 = document.getElementById('neirong1');
-        const neirong = document.getElementById('neirong');
+        document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
+        document.getElementById('neirong1').style.display = "none";
         
-        if (biaoti) biaoti.innerText = "您的设备已符合安全规范";
-        if (neirong1) neirong1.style.display = "none";
-        if (neirong) {
-            neirong.innerHTML = "<img class='true' src='./true.png'><div class='truetxt'><p class='jinchang'>进场成功</p><p class='riqi' id='dateTime01'></p></div>";
-        }
+        // Thay đổi nội dung bên trong khung trắng thành dấu tích
+        const container = document.getElementById('neirong');
+        container.innerHTML = `
+            <img class="true" src="./true.png">
+            <div class="truetxt">
+                <p class="jinchang">进场成功</p>
+                <p class="riqi" id="dateTime01"></p>
+            </div>
+        `;
 
+        // Cập nhật ngày giờ thành công
         setInterval(function () {
             const dt = document.getElementById('dateTime01');
             if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm');
         }, 1000);
     }
 
-    // 4. Xử lý sự kiện nhấn nút "Làm mới"
+    // 4. Nhấn 5 lần vào chữ "刷新二维码" để hiện dấu tích xanh
     let reloadClicks = [];
     const btnReload = document.querySelector('.shuaxinerweima');
+    
     if (btnReload) {
         btnReload.addEventListener('click', function (e) {
             e.preventDefault();
             const now = Date.now();
-            reloadClicks = reloadClicks.filter(ts => now - ts < 4000);
+            // Lọc các click trong vòng 3 giây
+            reloadClicks = reloadClicks.filter(ts => now - ts < 3000);
             reloadClicks.push(now);
 
-            // Nhấn đủ 5 lần sẽ tải lại trang
             if (reloadClicks.length >= 5) {
-                location.reload();
+                changetxt(); // Gọi hàm hiện tích xanh
+                reloadClicks = []; // Reset mảng click
             }
         });
     }
