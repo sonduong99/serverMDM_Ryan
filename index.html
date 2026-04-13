@@ -26,14 +26,15 @@
             text-align: center;
         }
         
-        /* Khung chứa ảnh: Cố định để font chữ không bị nhảy */
+        /* Vùng chứa ảnh: Tự co giãn theo ảnh, không ép chiều cao nữa */
         #neirong {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
             margin: 0 auto;
-            min-height: 250px; /* Giữ khoảng trống cố định */
+            /* Giữ khoảng trống tối thiểu để khi đổi ảnh không bị giật bố cục */
+            min-height: 200px; 
         }
 
         #neirong1 { padding: 0.5rem 0 4rem; }
@@ -50,8 +51,8 @@
         .ewm {
             display: block;
             margin: 0 auto;
-            /* Giới hạn QR tối đa để không bao giờ tràn viền */
-            max-width: 250px; 
+            /* Giới hạn mã QR tối đa 65% chiều rộng để không bao giờ chạm viền */
+            max-width: 65%; 
             height: auto;
             object-fit: contain;
         }
@@ -103,14 +104,12 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // CHỐT KÍCH THƯỚC DẤU TÍCH 180PX
+            // CHỐT: Dấu tích hiện 180px
             imgElement.style.width = "180px"; 
-            imgElement.style.height = "180px"; 
         } else {
             imgElement.src = "./ewm.gif";
-            // MÃ QR QUAY VỀ MẶC ĐỊNH (Theo max-width 250px của CSS)
+            // CHỐT: QR quay về kích thước tự nhiên (đã có max-width 65% bảo vệ)
             imgElement.style.width = ""; 
-            imgElement.style.height = "";
         }
     }
 
