@@ -2,78 +2,36 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=GBK">
-    <title>&#8206;</title>
     <link rel="stylesheet" href="./style.css">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-image: url("./IMG_8622.jpeg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: fixed;
-        }
-        .shuaxinerweima {
-            text-decoration: none;
-            display: block;
-        }
-        /* MÀU VÀNG: Đã nhạt hơn vàng nghệ một chút xíu, rất vừa mắt */
-        .saomatishi {
-            background-color: #ffc526 !important; /* Màu vàng sáng trung tính */
-            color: #ffffff !important;            /* Chữ trắng cho hiện đại */
-            font-weight: bold;
-        }
+        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
+        .saomatishi { background: #ffc526 !important; color: #fff !important; font-weight: bold; }
+        /* Gộp khoảng cách: trên 4rem, dưới 4rem, chữ cách QR 0.5rem */
+        #dateTime00 { padding-top: 4rem; margin-bottom: 1rem; font-weight: 500; }
+        #neirong1 { padding: 0.5rem 0 4rem; }
+        .shuaxinerweima { text-decoration: none; display: block; font-size: 3.3rem; color: inherit; }
     </style>
 </head>
-
 <body>
-<p><br><br></p>    
-<div class="zhengti">
-    <div class="juzuo1">V25051817 (Pham Son Duong)</div>
-    
-    <div class="saomatishi juzhong" id="biaoti">将二维码对准扫描器扫码进出场</div>
-    
-    <div class="yuan1 yuant"></div>
-    <div class="yuan2 yuant"></div>
-    
-    <div class="juzhong erweima zise">
-        <div class="juzuo2" id="dateTime00" style="font-weight: 500; padding-top: 4rem; margin-bottom: 1rem;"></div>
-        
-        <div id="neirong">
-            <img class="ewm" src="./ewm.gif">         
+    <p><br><br></p>    
+    <div class="zhengti">
+        <div class="juzuo1">V25051817 (Pham Son Duong)</div>
+        <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
+        <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
+        <div class="juzhong erweima zise">
+            <div id="dateTime00"></div>
+            <img class="ewm" src="./ewm.gif">
+            <div id="neirong1"><a class="shuaxinerweima juzhong" href="#">刷新二维码</a></div>
         </div>
-        
-        <div id="neirong1" style="padding-top: 0.5rem; padding-bottom: 4rem;">    
-            <a class="juzhong footsty shuaxinerweima" style="font-size: 3.3rem; margin: 0;" href="#">刷新二维码</a>
-        </div>
+        <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
     </div>
-
-    <div class="dierhang">
-        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
-    </div>
-</div>
-
 <script>
-    Date.prototype.format = function (fmt) {
-        var o = {
-            "y+": this.getFullYear(),
-            "M+": this.getMonth() + 1,
-            "d+": this.getDate(),
-            "h+": this.getHours(),
-            "m+": this.getMinutes(),
-            "s+": this.getSeconds(),
-        };
-        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (var k in o)
-            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        return fmt;
-    }
-    setInterval(function () {
-        const dt = document.getElementById('dateTime00');
-        if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
-    }, 1000);
+    const up = () => {
+        const d = new Date();
+        document.getElementById('dateTime00').innerText = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()} ${d.toTimeString().split(' ')[0]}`;
+    };
+    setInterval(up, 1000); up();
+    document.querySelector('.shuaxinerweima').onclick = e => e.preventDefault();
 </script>
 </body>
 </html>
