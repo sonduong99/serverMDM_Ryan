@@ -2,11 +2,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
+        body { 
+            background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; 
+            margin: 0;
+            padding: 0;
+        }
         
+        /* THANH TIÊU ĐỀ: Giữ nguyên màu trắng, font mảnh */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
@@ -14,29 +20,34 @@
             letter-spacing: normal; 
         }
 
+        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, cách trên 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
             color: #000000;
             font-weight: 500; 
+            text-align: center;
         }
         
-        /* Cố định chiều cao vùng chứa ảnh để không bị nhảy chữ bên dưới */
+        /* VÙNG CHỨA ẢNH: Lấy mã QR 180px làm gốc để không bị nhảy khung */
         #neirong {
             height: 180px; 
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         #neirong1 { padding: 0.5rem 0 4rem; }
 
+        /* NÚT BẤM: Chữ ĐEN, to 3.3rem */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
             color: #000000 !important; 
             margin: 0; 
             font-weight: normal; 
+            text-align: center;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -44,7 +55,14 @@
         .ewm {
             display: block;
             margin: 0 auto;
-            object-fit: contain;
+            transition: width 0.1s ease;
+        }
+
+        .dierhang {
+            padding: 20px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            text-align: justify;
         }
     </style>
 </head>
@@ -73,6 +91,7 @@
     </div>
 
 <script>
+    // 1. CẬP NHẬT THỜI GIAN THỰC
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -84,6 +103,7 @@
     setInterval(update, 1000); 
     update();
 
+    // 2. LOGIC ĐIỀU KHIỂN QR & DẤU TÍCH
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -93,29 +113,31 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // Kích thước dấu tích nhỏ hơn
-            imgElement.style.width = "160px"; 
+            imgElement.style.width = "160px"; // Dấu tích thu nhỏ về 160px
         } else {
             imgElement.src = "./ewm.gif";
-            // Kích thước mã QR (giữ theo style cũ của bạn)
-            imgElement.style.width = "180px"; 
+            imgElement.style.width = "180px"; // Mã QR làm gốc 180px
         }
     }
 
+    // Xử lý khi nhấn vào dòng chữ "刷新二维码"
     btn.onclick = function(e) {
         e.preventDefault();
         count++;
 
+        // Reset bộ đếm nếu quá 3 giây không nhấn tiếp
         clearTimeout(timer);
         timer = setTimeout(() => { count = 0; }, 3000);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
 
+        // Nếu đang ở QR: Nhấn đủ 5 lần trong 3 giây -> Hiện dấu tích
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
         } 
+        // Nếu đang ở Dấu tích: Nhấn đủ 3 lần trong 3 giây -> Quay lại QR
         else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
@@ -123,6 +145,7 @@
         }
     };
 
+    // Luôn kiểm tra trạng thái khi vừa mở app/trang web
     renderStatus();
 </script>
 </body>
