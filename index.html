@@ -3,34 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
         body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
-        .saomatishi { background: #ffc526 !important; color: #fff !important; font-weight: bold; }
-        /* Gộp khoảng cách: trên 4rem, dưới 4rem, chữ cách QR 0.5rem */
-        #dateTime00 { padding-top: 4rem; margin-bottom: 1rem; font-weight: 500; }
+        
+        /* 1. Thanh tiêu đề: Màu vàng nhạt hơn nghệ, chữ màu ĐEN */
+        .saomatishi { 
+            background: #ffc526 !important; 
+            color: #000000 !important; 
+            font-weight: bold; 
+        }
+
+        /* 2. Căn chỉnh khoảng cách khung trắng */
+        #dateTime00 { 
+            padding-top: 4rem; 
+            margin-bottom: 1rem; 
+            color: #000000; /* Chữ màu ĐEN cho ngày tháng */
+        }
+        
         #neirong1 { padding: 0.5rem 0 4rem; }
-        .shuaxinerweima { text-decoration: none; display: block; font-size: 3.3rem; color: inherit; }
+
+        /* 3. Nút làm mới: Màu đen, to rõ, không gạch chân */
+        .shuaxinerweima { 
+            text-decoration: none; 
+            display: block; 
+            color: #000000 !important; 
+            margin: 0; 
+        }
     </style>
 </head>
 <body>
     <p><br><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
+        
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
+        
         <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
+        
         <div class="juzhong erweima zise">
-            <div id="dateTime00"></div>
-            <img class="ewm" src="./ewm.gif">
-            <div id="neirong1"><a class="shuaxinerweima juzhong" href="#">刷新二维码</a></div>
+            <div id="dateTime00" class="juzuo2"></div>
+            
+            <div id="neirong">
+                <img class="ewm" src="./ewm.gif">
+            </div>
+            
+            <div id="neirong1">
+                <a class="shuaxinerweima juzhong footsty" style="font-size: 3.3rem;" href="#">刷新二维码</a>
+            </div>
         </div>
+        
         <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
     </div>
+
 <script>
-    const up = () => {
+    function update() {
         const d = new Date();
-        document.getElementById('dateTime00').innerText = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()} ${d.toTimeString().split(' ')[0]}`;
-    };
-    setInterval(up, 1000); up();
+        const datePart = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        const timePart = d.toTimeString().split(' ')[0]; 
+        document.getElementById('dateTime00').innerText = `${datePart} ${timePart}`;
+    }
+    setInterval(update, 1000); 
+    update();
+    
     document.querySelector('.shuaxinerweima').onclick = e => e.preventDefault();
 </script>
 </body>
