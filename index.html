@@ -5,30 +5,75 @@
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
-        .saomatishi { background: #ffc526 !important; color: #fff !important; font-weight: 400 !important; }
-        #dateTime00 { padding-top: 4rem; margin-bottom: 1rem; color: #000; font-weight: 500; }
-        #neirong1 { padding: 0.5rem 0 4rem; }
-        .shuaxinerweima { 
-            text-decoration: none; display: block; color: #000 !important; 
-            font-size: 3.3rem; user-select: none; -webkit-tap-highlight-color: transparent; 
+        /* Áp dụng font Noto Sans cho toàn bộ trang để không bị đổi font */
+        * {
+            font-family: 'Noto Sans', sans-serif !important;
         }
-        .ewm { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+
+        body { 
+            background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; 
+            margin: 0;
+        }
+        
+        .saomatishi { 
+            background: #ffc526 !important; 
+            color: #ffffff !important; 
+            font-weight: 400 !important; 
+        }
+
+        #dateTime00 { 
+            padding-top: 4rem; 
+            margin-bottom: 1rem; 
+            color: #000000;
+            font-weight: 500; 
+            height: 1.5em; /* Giữ chiều cao cố định để không bị nhảy dòng */
+        }
+        
+        /* CỐ ĐỊNH KHUNG ẢNH: Đảm bảo true.png và QR bằng chằn chặn nhau */
+        #neirong {
+            width: 18rem;  /* Điều chỉnh độ to nhỏ của QR tại đây */
+            height: 18rem; 
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ewm { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; /* Giữ tỉ lệ ảnh không bị méo */
+        }
+
+        #neirong1 { padding: 0.5rem 0 4rem; }
+
+        .shuaxinerweima { 
+            text-decoration: none; 
+            display: block; 
+            color: #000000 !important; 
+            font-size: 3.3rem;
+            font-weight: normal; 
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="zhengti">
-        <div class="juzuo1">V25051817 (Phạm Sơn Dương)</div>
+        <div class="juzuo1">V25051817 (Pham Son Duong)</div>
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
         <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
         
         <div class="juzhong erweima zise">
             <div id="dateTime00" class="juzuo2"></div>
+            
             <div id="neirong">
                 <img class="ewm" id="displayImage" src="./ewm.gif">
             </div>
+
             <div id="neirong1">
-                <a class="shuaxinerweima juzhong" href="javascript:void(0)">刷新二维码</a>
+                <a class="shuaxinerweima juzhong" id="refreshBtn">刷新二维码</a>
             </div>
         </div>
         
@@ -37,59 +82,49 @@
 
 <script>
     const imgElement = document.getElementById('displayImage');
-    const btn = document.querySelector('.shuaxinerweima');
+    const btn = document.getElementById('refreshBtn');
     const timeBox = document.getElementById('dateTime00');
-    const FILE_TICH = "./true.png"; // Đã sửa thành chữ thường
+    const FILE_TICH = "./true.png";
 
-    // 1. Cập nhật thời gian
-    const updateTime = () => {
+    // 1. CẬP NHẬT THỜI GIAN
+    const update = () => {
         const d = new Date();
         const date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-        const time = d.toTimeString().split(' ')[0];
-        timeBox.textContent = `${date} ${time}`;
-    };
-    setInterval(updateTime, 1000);
-    updateTime();
+        timeBox.innerText = `${date} ${d.toTimeString().split(' ')[0]}`;
+    }
+    setInterval(update, 1000); 
+    update();
 
-    // 2. Logic nhấn 5 lần
-    let count = 0;
-
+    // 2. LOGIC GIỮ NGUYÊN TRẠNG THÁI & FONT
     const setVerified = () => {
         imgElement.src = FILE_TICH;
-        // Tùy chỉnh kích thước nếu ảnh true.png quá to
-        imgElement.style.width = "180px"; 
         localStorage.setItem('isVerified', 'true');
-    };
+    }
 
-    // Kiểm tra trạng thái khi tải trang
     if (localStorage.getItem('isVerified') === 'true') {
         setVerified();
     }
 
+    let count = 0;
     btn.addEventListener('click', (e) => {
+        e.preventDefault();
         count++;
         if (count === 5) {
             setVerified();
-            count = 0; 
+            count = 0;
         }
     });
 
-    // Mẹo: Nhấn giữ nút 3 giây để xóa dấu tích (về lại mã QR)
+    // Reset bằng cách nhấn giữ 3 giây (dành cho bạn test)
     let timer;
-    btn.addEventListener('mousedown', () => {
-        timer = setTimeout(() => {
-            localStorage.removeItem('isVerified');
-            location.reload();
-        }, 3000);
-    });
-    btn.addEventListener('mouseup', () => clearTimeout(timer));
-    btn.addEventListener('touchstart', () => { // Hỗ trợ trên điện thoại
-        timer = setTimeout(() => {
-            localStorage.removeItem('isVerified');
-            location.reload();
-        }, 3000);
-    });
+    const reset = () => {
+        localStorage.removeItem('isVerified');
+        location.reload();
+    };
+    btn.addEventListener('touchstart', () => timer = setTimeout(reset, 3000));
     btn.addEventListener('touchend', () => clearTimeout(timer));
+    btn.addEventListener('mousedown', () => timer = setTimeout(reset, 3000));
+    btn.addEventListener('mouseup', () => clearTimeout(timer));
 </script>
 </body>
 </html>
