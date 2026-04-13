@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -11,85 +10,95 @@
             margin: 0;
             padding: 0;
             font-family: 'Noto Sans', sans-serif;
-        }
-        
-        /* THANH TIÊU ĐỀ */
-        .saomatishi { 
-            background: #ffc526 !important; 
-            color: #ffffff !important; 
-            font-weight: 400 !important; 
-            letter-spacing: normal; 
-            text-align: center;
-            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* KHUNG TRẮNG CHỨA QR/DẤU TÍCH */
-        .erweima {
-            background: rgba(255, 255, 255, 0.95);
-            margin: 0 auto;
-            width: 90%;
-            border-radius: 10px;
+        .zhengti { width: 100%; max-width: 500px; }
+
+        .juzuo1 {
+            color: white;
+            padding: 20px 0 10px 20px;
+            font-size: 1.1rem;
+        }
+        
+        /* THANH TIÊU ĐỀ VÀNG */
+        .saomatishi { 
+            background: #ffc526; 
+            color: #ffffff; 
+            font-weight: bold;
             text-align: center;
+            padding: 25px 15px;
+            margin: 0 15px;
+            border-radius: 15px;
+            font-size: 1.8rem;
+            line-height: 1.3;
+        }
+
+        /* KHUNG TRẮNG CHÍNH */
+        .erweima-container {
+            background: #ffffff;
+            margin: 15px;
+            border-radius: 15px;
+            padding: 30px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         #dateTime00 { 
-            padding-top: 4rem; 
-            margin-bottom: 1rem; 
-            color: #000000;
+            color: #333;
             font-weight: 500; 
-            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
         }
         
+        /* VÙNG CHỨA QR / DẤU TÍCH */
         #neirong {
-            min-height: 180px;
+            width: 220px;
+            height: 220px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .ewm {
-            width: 180px;
-            height: 180px;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
-
-        #neirong1 { padding: 0.5rem 0 4rem; }
 
         /* NÚT BẤM */
         .shuaxinerweima { 
             text-decoration: none; 
-            display: block; 
-            color: #000000 !important; 
-            margin: 0; 
-            font-weight: normal; 
-            text-align: center;
+            color: #000000; 
+            font-size: 2.8rem; /* Chỉnh kích thước chữ nút bấm */
+            margin-top: 30px;
+            display: block;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* DÒNG CHỮ CẢNH BÁO PHÍA DƯỚI */
         .dierhang {
-            padding: 20px;
-            color: #ffffff;
-            font-size: 0.9rem;
-            text-align: justify;
-            line-height: 1.4;
-        }
-
-        .juzuo1 {
-            color: white;
-            padding: 15px;
-            font-weight: bold;
+            padding: 0 25px;
+            color: #dddddd;
+            font-size: 0.85rem;
+            text-align: center;
+            line-height: 1.5;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <p><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
         
-        <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
+        <div class="saomatishi">将二维码对准扫描器<br>扫码进出场</div>
         
-        <div class="juzhong erweima">
+        <div class="erweima-container">
             <div id="dateTime00"></div>
             
             <div id="neirong">
@@ -97,16 +106,16 @@
                 <img class="ewm" id="tickImage" src="./true.png" style="display: none;">
             </div>
 
-            <div id="neirong1">
-                <a class="shuaxinerweima" style="font-size: 3.3rem;" href="#">刷新二维码</a>
-            </div>
+            <a class="shuaxinerweima" href="#">刷新二维码</a>
         </div>
         
-        <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
+        <div class="dierhang">
+            尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
+        </div>
     </div>
 
 <script>
-    // 1. CẬP NHẬT THỜI GIAN
+    // 1. Cập nhật thời gian thực
     function updateClock() {
         const d = new Date();
         const year = d.getFullYear();
@@ -118,46 +127,39 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // 2. LOGIC CHUYỂN ĐỔI QR <-> DẤU TÍCH
+    // 2. Logic nhấn và lưu trạng thái
     let clickCount = 0;
     let resetTimer;
-    const TIME_LIMIT = 3000; // 3 giây
+    const TIME_LIMIT = 3000;
 
     const qrImg = document.getElementById('qrImage');
     const tickImg = document.getElementById('tickImage');
 
-    // Hàm kiểm tra và hiển thị dựa trên bộ nhớ
     function applyStatus() {
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             qrImg.style.display = 'none';
-            tickImg.style.display = 'inline-block';
+            tickImg.style.display = 'block';
         } else {
-            qrImg.style.display = 'inline-block';
+            qrImg.style.display = 'block';
             tickImg.style.display = 'none';
         }
     }
 
-    // Xử lý khi nhấn vào nút "刷新二维码"
     document.querySelector('.shuaxinerweima').addEventListener('click', function(e) {
         e.preventDefault();
         clickCount++;
 
-        // Reset bộ đếm nếu quá 3 giây không nhấn tiếp
         clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => {
-            clickCount = 0;
-        }, TIME_LIMIT);
+        resetTimer = setTimeout(() => { clickCount = 0; }, TIME_LIMIT);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
 
-        // Nếu đang QR -> Nhấn đủ 5 lần sang Dấu tích
         if (currentMode === 'qr' && clickCount === 5) {
             localStorage.setItem('appMode', 'tick');
             applyStatus();
             clickCount = 0;
         } 
-        // Nếu đang Dấu tích -> Nhấn đủ 3 lần về QR
         else if (currentMode === 'tick' && clickCount === 3) {
             localStorage.setItem('appMode', 'qr');
             applyStatus();
@@ -165,7 +167,6 @@
         }
     });
 
-    // Chạy kiểm tra ngay khi mở trang
     applyStatus();
 </script>
 </body>
