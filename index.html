@@ -15,72 +15,90 @@
             background-position: center center;
             background-attachment: fixed;
             margin: 0;
+            display: flex;
+            justify-content: center;
         }
 
         .zhengti {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 40px;
+            padding-top: 50px;
+            width: 100%;
         }
 
         .juzuo1 {
             margin-bottom: 20px;
+            color: #ccc;
+            font-size: 1rem;
+        }
+
+        /* KHỐI CHUNG ĐỂ CỐ ĐỊNH CHIỀU RỘNG */
+        .container-qr {
+            width: 85%; /* Bạn có thể chỉnh 320px nếu muốn cố định */
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Cắt các phần thừa để bo góc chuẩn */
+            border-radius: 15px; /* Bo cả khối lớn */
+        }
+
+        /* THANH VÀNG TRÊN */
+        .saomatishi {
+            background: #f1c40f !important; /* Màu vàng */
+            margin: 0 !important;
+            padding: 20px 10px !important;
+            width: 100% !important;
+            box-sizing: border-box;
+            text-align: center;
             color: #fff;
             font-size: 1.1rem;
         }
 
-        /* 1. THANH VÀNG (Tiêu đề) - CHỈ BO GÓC TRÊN */
-        .saomatishi {
-            /* Màu vàng bạn có thể chỉnh lại cho đúng theo style.css của bạn, đây là màu minh họa */
-            background: #f1c40f; 
-            width: 90%;
-            max-width: 380px;
-            padding: 15px 0;
-            text-align: center;
-            /* ĐÂY LÀ CHỖ SỬA: Chỉ bo 2 góc TRÊN, 2 góc dưới để phẳng */
-            border-radius: 12px 12px 0 0; 
-            margin-bottom: 0 !important; /* QUAN TRỌNG: Triệt tiêu khoảng cách dưới */
-        }
-
-        /* 2. KHUNG TRẮNG (Chứa QR) - CHỈ BO GÓC DƯỚI */
+        /* KHUNG TRẮNG DƯỚI */
         .erweima {
-            /* QUAN TRỌNG: Nối khít với thanh vàng phía trên */
-            margin-top: 0 !important; 
-            margin-bottom: 40px !important; 
-            padding-bottom: 30px !important; 
-            background: #fff;
-            /* ĐÂY LÀ CHỖ SỬA: Chỉ bo 2 góc DƯỚI, 2 góc trên để phẳng */
-            border-radius: 0 0 12px 12px; 
+            background: #fff !important;
+            margin: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 90%;
-            max-width: 380px;
-            /* Thêm đường kẻ mờ ngăn cách nhẹ nếu muốn, hoặc xóa dòng này đi */
-            border-top: 1px solid #eee; 
+            padding-bottom: 30px !important;
+            border: none !important;
         }
 
-        .shuaxinerweima {
-            margin-top: 1.8rem !important; 
-            font-size: 3.3rem;
-            text-decoration: none; 
-            display: block;
-            color: #666;
-        }
-
-        .dierhang {
-            line-height: 1.8;
-            padding: 0 30px;
-            color: #ffffff;
-            text-align: center;
-        }
-
+        /* Ngày giờ trên QR */
         #dateTime00 {
-            font-weight: 500;
-            padding-top: 20px;
-            margin-bottom: 10px;
+            padding-top: 15px;
+            margin-bottom: 5px;
             color: #333;
+            font-size: 1.1rem;
+        }
+
+        /* Ảnh QR */
+        .ewm {
+            width: 80%; /* Để QR không bị chạm mép trắng */
+            height: auto;
+        }
+
+        /* Chữ Làm mới mã QR */
+        .shuaxinerweima {
+            margin-top: 1.5rem !important;
+            font-size: 1.2rem !important; /* Chỉnh lại font size vì 3.3rem có thể quá to gây tràn khung */
+            text-decoration: none;
+            color: #888;
+            display: block;
+        }
+
+        /* Văn bản dưới cùng */
+        .dierhang {
+            margin-top: 30px;
+            line-height: 1.6;
+            padding: 0 40px;
+            color: #ddd;
+            text-align: center;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -89,22 +107,24 @@
 <div class="zhengti">
     <div class="juzuo1">V25051817 (Phạm Sơn Dương)</div>
     
-    <div class="saomatishi juzhong" id="biaoti">将二维码对准扫描器扫码进出场</div>
-    
-    <div class="juzhong erweima zise">
-        <div id="dateTime00"></div>
-        
-        <div id="neirong">
-            <img class="ewm" src="./ewm.gif">         
+    <div class="container-qr">
+        <div class="saomatishi" id="biaoti">
+            将二维码对准扫描器扫码进出场
         </div>
         
-        <div id="neirong1">    
-            <a class="juzhong footsty shuaxinerweima" href="#">刷新二维码</a>
+        <div class="erweima">
+            <div id="dateTime00"></div>
+            <div id="neirong">
+                <img class="ewm" src="./ewm.gif">         
+            </div>
+            <div id="neirong1">    
+                <a class="shuaxinerweima" href="#">刷新二维码</a>
+            </div>
         </div>
     </div>
 
     <div class="dierhang">
-        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。
+        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
     </div>
 </div>
 
