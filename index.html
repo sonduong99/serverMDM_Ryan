@@ -38,7 +38,6 @@
                 <a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="#">刷新二维码</a>
             </div>
         </div>
-        
         </div>
 
     <div class="dierhang">
@@ -47,7 +46,7 @@
 </div>
 
 <script>
-    // 1. Định dạng ngày giờ
+    // 1. Định dạng ngày giờ hệ thống
     Date.prototype.format = function (fmt) {
         var o = {
             "y+": this.getFullYear(),
@@ -63,17 +62,23 @@
         return fmt;
     }
 
-    // 2. Cập nhật ngày giờ hệ thống liên tục (Phía trên QR)
+    // 2. Cập nhật ngày giờ phía trên QR liên tục
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
     }, 1000);
 
-    // 3. LOGIC CHUYỂN TRẠNG THÁI (Nếu vẫn muốn giữ tính năng click ẩn vào vùng khác để thành công)
+    // 3. Hàm xử lý trạng thái thành công (khi cần gọi đến)
     function changetxt() {
-        document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
-        document.getElementById('neirong1').style.display = "none";
-        document.getElementById('neirong').innerHTML = "<img class='true' src='./true.png'><div class='truetxt'><p class='jinchang'>进场成功</p><p class='riqi' id='dateTime01'></p></div>";
+        const biaoti = document.getElementById('biaoti');
+        const neirong1 = document.getElementById('neirong1');
+        const neirong = document.getElementById('neirong');
+        
+        if (biaoti) biaoti.innerText = "您的设备已符合安全规范";
+        if (neirong1) neirong1.style.display = "none";
+        if (neirong) {
+            neirong.innerHTML = "<img class='true' src='./true.png'><div class='truetxt'><p class='jinchang'>进场成功</p><p class='riqi' id='dateTime01'></p></div>";
+        }
 
         setInterval(function () {
             const dt = document.getElementById('dateTime01');
@@ -81,19 +86,22 @@
         }, 1000);
     }
 
-    // 4. LOGIC LÀM MỚI (Đã xóa bộ đếm cũ để không gây lỗi hiển thị)
+    // 4. Xử lý sự kiện nhấn nút "Làm mới"
     let reloadClicks = [];
-    document.querySelector('.shuaxinerweima').addEventListener('click', function (e) {
-        e.preventDefault();
-        const now = Date.now();
-        reloadClicks = reloadClicks.filter(ts => now - ts < 4000);
-        reloadClicks.push(now);
+    const btnReload = document.querySelector('.shuaxinerweima');
+    if (btnReload) {
+        btnReload.addEventListener('click', function (e) {
+            e.preventDefault();
+            const now = Date.now();
+            reloadClicks = reloadClicks.filter(ts => now - ts < 4000);
+            reloadClicks.push(now);
 
-        if (reloadClicks.length >= 5) {
-            // Chỉ làm mới trang hoặc reset logic tùy ý bạn, không còn hiển thị dateTime3
-            location.reload(); 
-        }
-    });
+            // Nhấn đủ 5 lần sẽ tải lại trang
+            if (reloadClicks.length >= 5) {
+                location.reload();
+            }
+        });
+    }
 </script>
 </body>
 </html>
