@@ -2,17 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { 
-            background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; 
-            margin: 0;
-            padding: 0;
-        }
+        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
         
-        /* THANH TIÊU ĐỀ: Chữ trắng, độ mảnh 400 */
+        /* THANH TIÊU ĐỀ: Giữ nguyên mọi thứ */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
@@ -20,48 +15,38 @@
             letter-spacing: normal; 
         }
 
-        /* KHUNG TRẮNG: Ngày tháng đen, padding trên 4rem */
+        /* KHUNG TRẮNG: Ngày tháng */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
             color: #000000;
             font-weight: 500; 
-            text-align: center;
         }
         
-        /* Cố định chiều cao khung chứa ảnh dựa trên mã QR 180px */
-        #neirong {
-            height: 180px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
         #neirong1 { padding: 0.5rem 0 4rem; }
 
-        /* NÚT BẤM: Chữ đen, kích thước 3.3rem */
+        /* NÚT BẤM: Font chữ 3.3rem giữ nguyên tuyệt đối */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
             color: #000000 !important; 
             margin: 0; 
             font-weight: normal; 
-            text-align: center;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Vùng chứa ảnh để không bị nhảy giao diện */
+        #neirong {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px; 
         }
 
         .ewm {
             display: block;
             margin: 0 auto;
-        }
-
-        .dierhang {
-            padding: 20px;
-            color: #ffffff;
-            font-size: 0.9rem;
-            text-align: justify;
         }
     </style>
 </head>
@@ -90,7 +75,7 @@
     </div>
 
 <script>
-    // 1. CẬP NHẬT THỜI GIAN THỰC
+    // 1. CẬP NHẬT THỜI GIAN
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -102,7 +87,7 @@
     setInterval(update, 1000); 
     update();
 
-    // 2. LOGIC ĐIỀU KHIỂN & LƯU TRẠNG THÁI
+    // 2. LOGIC ĐIỀU KHIỂN
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -112,33 +97,29 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            imgElement.style.width = "160px"; // Dấu tích nhỏ hơn
+            // CHỈNH KÍCH THƯỚC DẤU TÍCH LÀ 160 TẠI ĐÂY
+            imgElement.style.width = "160px"; 
         } else {
             imgElement.src = "./ewm.gif";
-            imgElement.style.width = "180px"; // Mã QR làm gốc
+            // TRẢ VỀ KÍCH THƯỚC GỐC CỦA MÃ QR (không ép số)
+            imgElement.style.width = ""; 
         }
     }
 
-    // Xử lý sự kiện click vào dòng chữ "刷新二维码"
     btn.onclick = function(e) {
         e.preventDefault();
         count++;
 
-        // Reset bộ đếm nếu quá 3 giây không nhấn tiếp
         clearTimeout(timer);
-        timer = setTimeout(() => {
-            count = 0;
-        }, 3000);
+        timer = setTimeout(() => { count = 0; }, 3000);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
 
-        // Đang ở QR -> Nhấn đủ 5 lần chuyển sang Tích
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
         } 
-        // Đang ở Tích -> Nhấn đủ 3 lần quay lại QR
         else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
@@ -146,7 +127,6 @@
         }
     };
 
-    // Kiểm tra trạng thái ngay khi mở ứng dụng (Kháng đóng app)
     renderStatus();
 </script>
 </body>
