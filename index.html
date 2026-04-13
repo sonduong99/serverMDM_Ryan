@@ -38,15 +38,8 @@
                 <a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="#">刷新二维码</a>
             </div>
         </div>
-
-        <div class="juzhong footsty yishengxiao word_breath">
-            <div id="trigger-success" style="cursor: pointer;">已生效</div>
+        
         </div>
-
-        <div class="juzhong footsty shijian">
-            <div id="dateTime3">00:00</div>
-        </div>
-    </div>
 
     <div class="dierhang">
         尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
@@ -76,19 +69,7 @@
         if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
     }, 1000);
 
-    // 3. LOGIC NHẤN 5 LẦN VÀO "ĐÃ CÓ HIỆU LỰC" ĐỂ HIỆN DẤU TÍCH XANH
-    let successClicks = [];
-    document.getElementById('trigger-success').addEventListener('click', function() {
-        const now = Date.now();
-        successClicks = successClicks.filter(ts => now - ts < 3000); 
-        successClicks.push(now);
-
-        if (successClicks.length >= 5) {
-            changetxt();
-            successClicks = []; 
-        }
-    });
-
+    // 3. LOGIC CHUYỂN TRẠNG THÁI (Nếu vẫn muốn giữ tính năng click ẩn vào vùng khác để thành công)
     function changetxt() {
         document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
         document.getElementById('neirong1').style.display = "none";
@@ -100,33 +81,17 @@
         }, 1000);
     }
 
-    // 4. LOGIC RESET ĐỒNG HỒ KHI NHẤN 5 LẦN VÀO NÚT "LÀM MỚI"
-    let startTime = localStorage.getItem("startTime") || Date.now();
-    localStorage.setItem("startTime", startTime);
-
-    // Hiển thị đồng hồ đếm thời gian đã trôi qua
-    setInterval(function () {
-        let diff = Math.floor((Date.now() - startTime) / 1000);
-        let hrs = Math.floor(diff / 3600);
-        let mins = Math.floor((diff % 3600) / 60);
-        let secs = diff % 60;
-        let timeStr = (hrs > 0 ? hrs + ':' : '') + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
-        document.getElementById('dateTime3').innerHTML = timeStr;
-    }, 1000);
-
+    // 4. LOGIC LÀM MỚI (Đã xóa bộ đếm cũ để không gây lỗi hiển thị)
     let reloadClicks = [];
     document.querySelector('.shuaxinerweima').addEventListener('click', function (e) {
         e.preventDefault();
         const now = Date.now();
-        // Giới hạn trong 4 giây phải nhấn đủ 5 lần
         reloadClicks = reloadClicks.filter(ts => now - ts < 4000);
         reloadClicks.push(now);
 
-        // ĐÃ SỬA: Nhấn đủ 5 lần sẽ reset
         if (reloadClicks.length >= 5) {
-            startTime = Date.now();
-            localStorage.setItem("startTime", startTime);
-            reloadClicks = [];
+            // Chỉ làm mới trang hoặc reset logic tùy ý bạn, không còn hiển thị dateTime3
+            location.reload(); 
         }
     });
 </script>
