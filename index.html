@@ -7,7 +7,6 @@
     <style>
         body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
         
-        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
@@ -15,7 +14,6 @@
             letter-spacing: normal; 
         }
 
-        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
@@ -25,7 +23,6 @@
         
         #neirong1 { padding: 0.5rem 0 4rem; }
 
-        /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
@@ -36,10 +33,20 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Giữ nguyên class gốc của bạn */
+        /* KHUNG CHỨA ẢNH: Giữ nguyên diện tích để không nhảy chữ */
+        #neirong {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Bạn có thể thêm height cố định ở đây nếu muốn an toàn tuyệt đối, 
+               nhưng bản script dưới đây đã xử lý việc giữ khung rồi */
+        }
+
         .ewm {
             display: block;
             margin: 0 auto;
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -68,7 +75,6 @@
     </div>
 
 <script>
-    // 1. CẬP NHẬT THỜI GIAN (GIỮ NGUYÊN)
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -80,7 +86,6 @@
     setInterval(update, 1000); 
     update();
 
-    // 2. LOGIC NHẤN 5 LẦN / 3 LẦN VÀ LƯU TRẠNG THÁI
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -90,29 +95,24 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // CHỈ SỬA KÍCH THƯỚC DẤU TÍCH VỀ 160PX
-            imgElement.style.width = "160px";
-            imgElement.style.height = "auto";
+            // CHỈ SỬA KÍCH THƯỚC DẤU TÍCH
+            imgElement.style.width = "160px"; 
+            // Giữ cho khung hình không bị hẫng bằng cách bù margin nếu cần, 
+            // nhưng style.width là đủ để thu nhỏ ảnh mà không đổi font chữ.
         } else {
             imgElement.src = "./ewm.gif";
-            // XÓA BỎ ÉP KÍCH THƯỚC ĐỂ QUAY VỀ MÃ QR GỐC
-            imgElement.style.width = "";
-            imgElement.style.height = "";
+            // QUAY VỀ KÍCH THƯỚC GỐC CỦA MÃ QR (Xóa bỏ ép kích thước)
+            imgElement.style.width = ""; 
         }
     }
 
-    // Xử lý sự kiện click
     btn.onclick = function(e) {
         e.preventDefault();
         count++;
-
         clearTimeout(timer);
-        timer = setTimeout(() => {
-            count = 0;
-        }, 3000);
+        timer = setTimeout(() => { count = 0; }, 3000);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
-
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
@@ -125,7 +125,6 @@
         }
     };
 
-    // Kiểm tra trạng thái ngay khi mở ứng dụng
     renderStatus();
 </script>
 </body>
