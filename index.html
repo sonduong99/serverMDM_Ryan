@@ -16,6 +16,7 @@
             background: #ffc526 !important; 
             color: #ffffff !important; 
             font-weight: 400 !important; 
+            letter-spacing: normal; 
         }
 
         #dateTime00 { 
@@ -26,15 +27,14 @@
             text-align: center;
         }
         
-        /* Vùng chứa ảnh: Tự co giãn theo ảnh, không ép chiều cao nữa */
+        /* CỐ ĐỊNH KHUNG HÌNH: Giúp dấu tích 180px nằm gọn, không làm nhảy chữ */
         #neirong {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
+            min-height: 250px; /* Giữ khoảng trống để không bị co rút khung */
             margin: 0 auto;
-            /* Giữ khoảng trống tối thiểu để khi đổi ảnh không bị giật bố cục */
-            min-height: 200px; 
         }
 
         #neirong1 { padding: 0.5rem 0 4rem; }
@@ -43,6 +43,8 @@
             text-decoration: none; 
             display: block; 
             color: #000000 !important; 
+            margin: 0; 
+            font-weight: normal; 
             text-align: center;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
@@ -51,8 +53,8 @@
         .ewm {
             display: block;
             margin: 0 auto;
-            /* Giới hạn mã QR tối đa 65% chiều rộng để không bao giờ chạm viền */
-            max-width: 65%; 
+            /* CHỐNG TRÀN VIỀN: Mã QR không bao giờ to quá 70% chiều rộng */
+            max-width: 70%; 
             height: auto;
             object-fit: contain;
         }
@@ -69,21 +71,28 @@
     <p><br><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
+        
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
+        
         <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
+        
         <div class="juzhong erweima zise">
             <div id="dateTime00" class="juzuo2"></div>
+            
             <div id="neirong">
                 <img class="ewm" id="displayImage" src="./ewm.gif">
             </div>
+
             <div id="neirong1">
                 <a class="shuaxinerweima juzhong footsty" style="font-size: 3.3rem;" href="#">刷新二维码</a>
             </div>
         </div>
+        
         <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
     </div>
 
 <script>
+    // 1. Cập nhật thời gian chuẩn
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -95,6 +104,7 @@
     setInterval(update, 1000); 
     update();
 
+    // 2. Logic nhấn và kích thước ảnh
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -104,11 +114,11 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // CHỐT: Dấu tích hiện 180px
+            // Ép dấu tích về đúng 180px
             imgElement.style.width = "180px"; 
         } else {
             imgElement.src = "./ewm.gif";
-            // CHỐT: QR quay về kích thước tự nhiên (đã có max-width 65% bảo vệ)
+            // Trả về mặc định (theo max-width 70% của CSS)
             imgElement.style.width = ""; 
         }
     }
@@ -118,17 +128,20 @@
         count++;
         clearTimeout(timer);
         timer = setTimeout(() => { count = 0; }, 3000);
+
         const currentMode = localStorage.getItem('appMode') || 'qr';
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
-        } else if (currentMode === 'tick' && count === 3) {
+        } 
+        else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
             count = 0;
         }
     };
+
     renderStatus();
 </script>
 </body>
