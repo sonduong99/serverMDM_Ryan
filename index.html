@@ -15,66 +15,6 @@
             background-position: center center;
             background-attachment: fixed;
         }
-
-        /* Tinh chỉnh khung trắng cân đối */
-        .erweima {
-            height: auto !important; 
-            padding-top: 2rem !important; 
-            /* Khoảng cách từ Chữ xuống Đáy khung (D) */
-            padding-bottom: 3.5rem !important; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-radius: 8px;
-        }
-
-        #neirong {
-            margin-top: 1rem;
-            line-height: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #neirong img.ewm {
-            width: 23rem;
-            height: 23rem;
-            display: block;
-        }
-
-        #neirong1 {
-            /* Khoảng cách từ QR xuống Chữ (K) - Đặt bằng padding-bottom để cân bằng */
-            margin-top: 3.5rem !important; 
-        }
-
-        .shuaxinerweima {
-            font-size: 1.8rem !important; 
-            color: #888 !important;       
-            text-decoration: none;
-            display: block;
-            line-height: 1;
-        }
-
-        /* Style cho dấu tích xanh khi kích hoạt */
-        .true {
-            width: 12rem;
-            height: 12rem;
-            margin-top: 2rem;
-        }
-        .truetxt {
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .jinchang {
-            font-size: 2.2rem;
-            color: #2ba667;
-            font-weight: bold;
-            margin: 0.5rem 0;
-        }
-        .riqi {
-            font-size: 1.6rem;
-            color: #666;
-        }
     </style>
 </head>
 
@@ -88,16 +28,17 @@
     <div class="yuan2 yuant"></div>
     
     <div class="juzhong erweima zise">
-        <div class="juzuo2" id="dateTime00" style="font-weight: 500; font-size: 1.8rem; color: #333;"></div>
-        
+        <div class="juzuo2" id="dateTime00" style="font-weight: 500;"></div>
         <div id="neirong">
             <img class="ewm" src="./ewm.gif">         
         </div>
         
         <div id="neirong1">    
-            <a class="juzhong footsty shuaxinerweima" href="#">刷新二维码</a>
+            <div>
+                <a class="juzhong footsty shuaxinerweima" style="margin-top: 2rem; font-size: 3.3rem" href="#">刷新二维码</a>
+            </div>
         </div>
-    </div>
+        </div>
 
     <div class="dierhang">
         尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
@@ -121,49 +62,11 @@
         return fmt;
     }
 
-    // 2. Cập nhật ngày giờ hệ thống
+    // 2. Cập nhật ngày giờ hệ thống liên tục (Phía trên QR)
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
     }, 1000);
-
-    // 3. Hàm hiển thị tích xanh thành công
-    function showSuccess() {
-        document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
-        document.getElementById('neirong1').style.display = "none";
-        
-        const container = document.getElementById('neirong');
-        container.innerHTML = `
-            <img class="true" src="./true.png">
-            <div class="truetxt">
-                <p class="jinchang">进场成功</p>
-                <p class="riqi" id="dateTime01"></p>
-            </div>
-        `;
-
-        setInterval(function () {
-            const dt = document.getElementById('dateTime01');
-            if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm');
-        }, 1000);
-    }
-
-    // 4. Nhấn 5 lần vào chữ "刷新二维码" để hiện dấu tích xanh
-    let clickCount = [];
-    const btnAction = document.querySelector('.shuaxinerweima');
-    
-    if (btnAction) {
-        btnAction.addEventListener('click', function (e) {
-            e.preventDefault();
-            const now = Date.now();
-            clickCount = clickCount.filter(ts => now - ts < 3000);
-            clickCount.push(now);
-
-            if (clickCount.length >= 5) {
-                showSuccess();
-                clickCount = []; 
-            }
-        });
-    }
 </script>
 </body>
 </html>
