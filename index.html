@@ -2,20 +2,22 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
+        body { 
+            background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; 
+            margin: 0;
+            padding: 0;
+        }
         
-        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
             font-weight: 400 !important; 
-            letter-spacing: normal; 
         }
 
-        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
@@ -28,29 +30,37 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Giữ chiều cao tối thiểu để khung trắng không bị nhảy khi đổi ảnh */
-            min-height: 200px; 
+            width: 100%;
+            margin: 0 auto;
+            /* Giữ một khoảng trống tối thiểu để bố cục không bị giật */
+            min-height: 220px; 
         }
 
         #neirong1 { padding: 0.5rem 0 4rem; }
 
-        /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
             color: #000000 !important; 
-            margin: 0; 
-            font-weight: normal; 
-            user-select: none;
             text-align: center;
+            user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         .ewm {
             display: block;
             margin: 0 auto;
-            /* Đảm bảo ảnh luôn giữ tỉ lệ chuẩn, không méo */
-            object-fit: contain; 
+            /* CHỐNG TRÀN: QR không bao giờ vượt quá 80% chiều rộng khung trắng */
+            max-width: 80%; 
+            height: auto;
+            object-fit: contain;
+        }
+
+        .dierhang {
+            padding: 20px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            text-align: justify;
         }
     </style>
 </head>
@@ -58,28 +68,21 @@
     <p><br><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
-        
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
-        
         <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
-        
         <div class="juzhong erweima zise">
             <div id="dateTime00" class="juzuo2"></div>
-            
             <div id="neirong">
                 <img class="ewm" id="displayImage" src="./ewm.gif">
             </div>
-
             <div id="neirong1">
                 <a class="shuaxinerweima juzhong footsty" style="font-size: 3.3rem;" href="#">刷新二维码</a>
             </div>
         </div>
-        
         <div class="dierhang">尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。</div>
     </div>
 
 <script>
-    // 1. CẬP NHẬT THỜI GIAN
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -91,7 +94,6 @@
     setInterval(update, 1000); 
     update();
 
-    // 2. LOGIC NHẤN VÀ HIỂN THỊ
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -101,39 +103,31 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // CHỈ THAY ĐỔI KÍCH THƯỚC DẤU TÍCH
-            imgElement.style.width = "160px";
-            imgElement.style.height = "auto";
+            // Dấu tích hiện 180px
+            imgElement.style.width = "180px"; 
         } else {
             imgElement.src = "./ewm.gif";
-            // TRẢ VỀ KÍCH THƯỚC MẶC ĐỊNH CHO QR
+            // QR quay về mặc định (được bảo vệ bởi max-width 80% ở trên)
             imgElement.style.width = ""; 
-            imgElement.style.height = "";
         }
     }
 
     btn.onclick = function(e) {
         e.preventDefault();
         count++;
-
         clearTimeout(timer);
         timer = setTimeout(() => { count = 0; }, 3000);
-
         const currentMode = localStorage.getItem('appMode') || 'qr';
-
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
-        } 
-        else if (currentMode === 'tick' && count === 3) {
+        } else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
             count = 0;
         }
     };
-
-    // Khởi tạo trạng thái ban đầu
     renderStatus();
 </script>
 </body>
