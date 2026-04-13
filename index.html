@@ -12,7 +12,7 @@
             padding: 0;
         }
         
-        /* THANH TIÊU ĐỀ: Giữ nguyên màu trắng, font mảnh */
+        /* THANH TIÊU ĐỀ: Chữ trắng, độ mảnh 400 */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
@@ -20,7 +20,7 @@
             letter-spacing: normal; 
         }
 
-        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, cách trên 4rem */
+        /* KHUNG TRẮNG: Ngày tháng đen, padding trên 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
@@ -29,7 +29,7 @@
             text-align: center;
         }
         
-        /* VÙNG CHỨA ẢNH: Lấy mã QR 180px làm gốc để không bị nhảy khung */
+        /* Cố định chiều cao khung chứa ảnh dựa trên mã QR 180px */
         #neirong {
             height: 180px; 
             display: flex;
@@ -40,7 +40,7 @@
 
         #neirong1 { padding: 0.5rem 0 4rem; }
 
-        /* NÚT BẤM: Chữ ĐEN, to 3.3rem */
+        /* NÚT BẤM: Chữ đen, kích thước 3.3rem */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
@@ -55,7 +55,6 @@
         .ewm {
             display: block;
             margin: 0 auto;
-            transition: width 0.1s ease;
         }
 
         .dierhang {
@@ -103,7 +102,7 @@
     setInterval(update, 1000); 
     update();
 
-    // 2. LOGIC ĐIỀU KHIỂN QR & DẤU TÍCH
+    // 2. LOGIC ĐIỀU KHIỂN & LƯU TRẠNG THÁI
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -113,31 +112,33 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            imgElement.style.width = "160px"; // Dấu tích thu nhỏ về 160px
+            imgElement.style.width = "160px"; // Dấu tích nhỏ hơn
         } else {
             imgElement.src = "./ewm.gif";
-            imgElement.style.width = "180px"; // Mã QR làm gốc 180px
+            imgElement.style.width = "180px"; // Mã QR làm gốc
         }
     }
 
-    // Xử lý khi nhấn vào dòng chữ "刷新二维码"
+    // Xử lý sự kiện click vào dòng chữ "刷新二维码"
     btn.onclick = function(e) {
         e.preventDefault();
         count++;
 
         // Reset bộ đếm nếu quá 3 giây không nhấn tiếp
         clearTimeout(timer);
-        timer = setTimeout(() => { count = 0; }, 3000);
+        timer = setTimeout(() => {
+            count = 0;
+        }, 3000);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
 
-        // Nếu đang ở QR: Nhấn đủ 5 lần trong 3 giây -> Hiện dấu tích
+        // Đang ở QR -> Nhấn đủ 5 lần chuyển sang Tích
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
         } 
-        // Nếu đang ở Dấu tích: Nhấn đủ 3 lần trong 3 giây -> Quay lại QR
+        // Đang ở Tích -> Nhấn đủ 3 lần quay lại QR
         else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
@@ -145,7 +146,7 @@
         }
     };
 
-    // Luôn kiểm tra trạng thái khi vừa mở app/trang web
+    // Kiểm tra trạng thái ngay khi mở ứng dụng (Kháng đóng app)
     renderStatus();
 </script>
 </body>
