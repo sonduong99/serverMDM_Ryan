@@ -18,35 +18,31 @@
             padding: 0;
         }
 
-        .zhengti {
-            padding-top: 50px;
-        }
-
         /* 1. Khoảng cách tên nhân viên */
         .juzuo1 {
-            margin-bottom: 25px;
+            margin-top: 40px;
+            margin-bottom: 20px;
             color: white;
             text-align: center;
-            font-size: 1.2rem;
         }
 
-        /* Tiêu đề vàng - Bo góc trên */
+        /* Tiêu đề vàng - Thiết lập bo góc trên và sát lề */
         .saomatishi {
             background-color: #ffbe00; /* Màu vàng */
             color: #000;
-            margin: 0 25px !important; /* Căn lề 2 bên */
+            margin: 0 20px !important; 
             padding: 15px 0;
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
-            font-weight: bold;
             text-align: center;
+            font-weight: bold;
         }
 
-        /* 2. Khung màu trắng (erweima) - Bo góc dưới, sát mép vàng */
+        /* 2. Khung màu trắng (erweima) - Sát khít nền vàng */
         .erweima {
             background-color: #ffffff;
-            margin: 0 25px !important;    /* Khớp với phần vàng */
-            margin-top: 0 !important;      /* Sát khít với tiêu đề vàng */
+            margin: 0 20px !important;    /* Khớp margin với phần vàng */
+            margin-top: 0 !important;      /* KHÍT SÁT VỚI NỀN VÀNG */
             margin-bottom: 30px !important; 
             padding-bottom: 35px !important;
             border-bottom-left-radius: 15px;
@@ -56,7 +52,21 @@
             align-items: center;
         }
 
-        /* 3. Dòng chữ 'Làm mới mã QR' - Giữ nguyên kích thước */
+        /* GIỮ NGUYÊN KÍCH THƯỚC MÃ QR */
+        .ewm {
+            /* Không set width cố định ở đây để nó lấy theo size tự nhiên của file ewm.gif 
+               hoặc bạn có thể thêm width: 100% nếu class .ewm trong style.css đã định nghĩa */
+            display: block;
+        }
+
+        /* GIỮ NGUYÊN CHỮ ĐỒNG HỒ */
+        .juzuo2 {
+            font-weight: 500; 
+            padding-top: 15px; 
+            margin-bottom: 10px;
+        }
+
+        /* 3. Dòng chữ 'Làm mới mã QR' - Giữ đúng 3.3rem */
         .shuaxinerweima {
             margin-top: 1.8rem !important; 
             font-size: 3.3rem;
@@ -65,30 +75,15 @@
             color: #555;
         }
 
-        /* Đồng hồ - Giữ nguyên font-weight 500 */
-        .juzuo2 {
-            font-weight: 500; 
-            padding-top: 15px; 
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            color: #333;
-        }
-
-        /* Ảnh QR */
-        .ewm {
-            width: 250px; /* Chỉnh theo kích thước bạn muốn */
-            height: auto;
-        }
-
         /* 4. Đoạn văn bản dưới cùng */
         .dierhang {
             line-height: 1.7;
-            padding: 0 35px;
+            padding: 0 25px;
             color: #ffffff;
             text-align: center;
         }
 
-        /* Ẩn các khối thừa nếu không dùng để tránh bị hở */
+        /* Ẩn các div thừa gây khoảng cách */
         .yuant { display: none; }
     </style>
 </head>
@@ -114,7 +109,7 @@
     </div>
 
     <div class="dierhang">
-        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。
+        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
     </div>
 </div>
 
