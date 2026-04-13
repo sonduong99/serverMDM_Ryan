@@ -16,7 +16,7 @@
             background-attachment: fixed;
         }
 
-        /* Tinh chỉnh khung trắng cân đối tuyệt đối */
+        /* Tinh chỉnh khung trắng cân đối */
         .erweima {
             height: auto !important; 
             padding-top: 2rem !important; 
@@ -43,7 +43,7 @@
         }
 
         #neirong1 {
-            /* Khoảng cách từ QR xuống Chữ (K) - Đặt bằng với padding-bottom ở trên */
+            /* Khoảng cách từ QR xuống Chữ (K) - Đặt bằng padding-bottom để cân bằng */
             margin-top: 3.5rem !important; 
         }
 
@@ -55,7 +55,7 @@
             line-height: 1;
         }
 
-        /* Style cho trạng thái thành công (Dấu tích xanh) */
+        /* Style cho dấu tích xanh khi kích hoạt */
         .true {
             width: 12rem;
             height: 12rem;
@@ -121,16 +121,16 @@
         return fmt;
     }
 
-    // 2. Cập nhật ngày giờ phía trên QR liên tục
+    // 2. Cập nhật ngày giờ hệ thống
     setInterval(function () {
         const dt = document.getElementById('dateTime00');
         if (dt) dt.innerHTML = (new Date()).format('yyyy-M-d hh:mm:ss');
     }, 1000);
 
-    // 3. Hàm chuyển sang giao diện Thành công (Dấu tích xanh)
+    // 3. Hàm hiển thị tích xanh thành công
     function showSuccess() {
         document.getElementById('biaoti').innerText = "您的设备已符合安全规范";
-        document.getElementById('neirong1').style.display = "none"; // Ẩn chữ làm mới
+        document.getElementById('neirong1').style.display = "none";
         
         const container = document.getElementById('neirong');
         container.innerHTML = `
@@ -141,14 +141,13 @@
             </div>
         `;
 
-        // Cập nhật ngày giờ lúc thành công
         setInterval(function () {
             const dt = document.getElementById('dateTime01');
             if (dt) dt.innerHTML = (new Date()).format('yyyy-MM-dd hh:mm');
         }, 1000);
     }
 
-    // 4. Logic nhấn 5 lần vào chữ "刷新二维码" để hiện tích xanh
+    // 4. Nhấn 5 lần vào chữ "刷新二维码" để hiện dấu tích xanh
     let clickCount = [];
     const btnAction = document.querySelector('.shuaxinerweima');
     
@@ -156,12 +155,11 @@
         btnAction.addEventListener('click', function (e) {
             e.preventDefault();
             const now = Date.now();
-            // Chỉ tính các lần nhấn trong vòng 3 giây
             clickCount = clickCount.filter(ts => now - ts < 3000);
             clickCount.push(now);
 
             if (clickCount.length >= 5) {
-                showSuccess(); // Kích hoạt dấu tích xanh
+                showSuccess();
                 clickCount = []; 
             }
         });
