@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <style>
-        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; margin: 0; }
+        body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
         
+        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
         .saomatishi { 
             background: #ffc526 !important; 
             color: #ffffff !important; 
@@ -15,6 +15,7 @@
             letter-spacing: normal; 
         }
 
+        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
@@ -24,6 +25,7 @@
         
         #neirong1 { padding: 0.5rem 0 4rem; }
 
+        /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
@@ -34,7 +36,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Class ewm giữ nguyên theo file style.css của bạn */
+        /* Giữ nguyên class gốc của bạn */
         .ewm {
             display: block;
             margin: 0 auto;
@@ -45,7 +47,9 @@
     <p><br><br></p>    
     <div class="zhengti">
         <div class="juzuo1">V25051817 (Pham Son Duong)</div>
+        
         <div class="saomatishi juzhong">将二维码对准扫描器扫码进出场</div>
+        
         <div class="yuan1 yuant"></div><div class="yuan2 yuant"></div>
         
         <div class="juzhong erweima zise">
@@ -64,7 +68,7 @@
     </div>
 
 <script>
-    // 1. Cập nhật thời gian thực
+    // 1. CẬP NHẬT THỜI GIAN (GIỮ NGUYÊN)
     function update() {
         const d = new Date();
         const year = d.getFullYear();
@@ -76,34 +80,39 @@
     setInterval(update, 1000); 
     update();
 
-    // 2. Logic xử lý hiển thị
-    const imgElement = document.getElementById('displayImage');
-    const btn = document.querySelector('.shuaxinerweima');
+    // 2. LOGIC NHẤN 5 LẦN / 3 LẦN VÀ LƯU TRẠNG THÁI
     let count = 0;
     let timer;
+    const btn = document.querySelector('.shuaxinerweima');
+    const imgElement = document.getElementById('displayImage');
 
     function renderStatus() {
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // Chỉ can thiệp kích thước tấm ảnh dấu tích
+            // CHỈ SỬA KÍCH THƯỚC DẤU TÍCH VỀ 160PX
             imgElement.style.width = "160px";
             imgElement.style.height = "auto";
         } else {
             imgElement.src = "./ewm.gif";
-            // Xóa bỏ style inline để quay về kích thước gốc của mã QR trong style.css
+            // XÓA BỎ ÉP KÍCH THƯỚC ĐỂ QUAY VỀ MÃ QR GỐC
             imgElement.style.width = "";
             imgElement.style.height = "";
         }
     }
 
+    // Xử lý sự kiện click
     btn.onclick = function(e) {
         e.preventDefault();
         count++;
+
         clearTimeout(timer);
-        timer = setTimeout(() => { count = 0; }, 3000);
+        timer = setTimeout(() => {
+            count = 0;
+        }, 3000);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
+
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
@@ -116,7 +125,7 @@
         }
     };
 
-    // Khởi tạo trạng thái
+    // Kiểm tra trạng thái ngay khi mở ứng dụng
     renderStatus();
 </script>
 </body>
