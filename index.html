@@ -29,13 +29,11 @@
             text-align: center;
         }
         
-        /* VÙNG CHỨA ẢNH: Lấy mã QR làm gốc (180px) để không bị nhảy chữ */
+        /* VÙNG CHỨA ẢNH: Giữ nguyên bố cục gốc của bạn */
         #neirong {
-            height: 180px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
         }
 
         #neirong1 { padding: 0.5rem 0 4rem; }
@@ -52,16 +50,13 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* CSS ĐỂ CHỐNG MÉO ẢNH */
+        /* Giữ nguyên class .ewm gốc từ file style.css của bạn */
         .ewm {
             display: block;
             margin: 0 auto;
-            /* Đảm bảo chiều cao tự động nhảy theo chiều rộng để giữ đúng tỉ lệ */
-            height: auto !important; 
-            /* Giúp ảnh nằm gọn trong khung mà không bị bóp méo */
-            object-fit: contain; 
         }
 
+        /* Giữ nguyên dierhang */
         .dierhang {
             padding: 20px;
             color: #ffffff;
@@ -107,7 +102,7 @@
     setInterval(update, 1000); 
     update();
 
-    // 2. LOGIC ĐIỀU KHIỂN & KÍCH THƯỚC (CHỐNG MÉO)
+    // 2. LOGIC ĐIỀU KHIỂN QR & DẤU TÍCH (LẤY GỐC LÀM CHUẨN)
     let count = 0;
     let timer;
     const btn = document.querySelector('.shuaxinerweima');
@@ -117,12 +112,14 @@
         const mode = localStorage.getItem('appMode');
         if (mode === 'tick') {
             imgElement.src = "./true.png";
-            // Kích thước dấu tích 160px (Sẽ không bị méo nhờ CSS height: auto)
+            // CHỈ CAN THIỆP DUY NHẤT Ở ĐÂY: Dấu tích hiện ra đúng 160px
             imgElement.style.width = "160px"; 
+            imgElement.style.height = "auto"; // Chống méo
         } else {
             imgElement.src = "./ewm.gif";
-            // Kích thước QR gốc 180px
-            imgElement.style.width = "180px"; 
+            // TRẢ LẠI KÍCH THƯỚC GỐC CỦA MÃ QR (không ép số, lấy theo style.css gốc)
+            imgElement.style.width = ""; 
+            imgElement.style.height = ""; 
         }
     }
 
@@ -133,19 +130,17 @@
 
         // Reset bộ đếm nếu quá 3 giây không nhấn tiếp
         clearTimeout(timer);
-        timer = setTimeout(() => {
-            count = 0;
-        }, 3000);
+        timer = setTimeout(() => { count = 0; }, 3000);
 
         const currentMode = localStorage.getItem('appMode') || 'qr';
 
-        // Đang ở QR -> Nhấn 5 lần chuyển sang Tích
+        // Đang ở QR -> Nhấn đủ 5 lần chuyển sang Tích
         if (currentMode === 'qr' && count === 5) {
             localStorage.setItem('appMode', 'tick');
             renderStatus();
             count = 0;
         } 
-        // Đang ở Tích -> Nhấn 3 lần quay lại QR
+        // Đang ở Tích -> Nhấn đủ 3 lần quay lại QR
         else if (currentMode === 'tick' && count === 3) {
             localStorage.setItem('appMode', 'qr');
             renderStatus();
