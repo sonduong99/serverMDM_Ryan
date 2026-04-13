@@ -7,28 +7,31 @@
     <style>
         body { background: url("./IMG_8622.jpeg") no-repeat center/cover fixed; }
         
-        /* 1. Thanh tiêu đề: Màu vàng nhạt hơn nghệ, chữ màu ĐEN */
+        /* THANH TIÊU ĐỀ: Chữ MÀU TRẮNG, độ mảnh bình thường */
         .saomatishi { 
             background: #ffc526 !important; 
-            color: #000000 !important; 
-            font-weight: bold; 
+            color: #ffffff !important; /* Đã đổi lại màu TRẮNG */
+            font-weight: 400 !important; 
+            letter-spacing: normal; 
         }
 
-        /* 2. Căn chỉnh khoảng cách khung trắng */
+        /* KHUNG TRẮNG: Ngày tháng màu ĐEN, khoảng cách 4rem */
         #dateTime00 { 
             padding-top: 4rem; 
             margin-bottom: 1rem; 
-            color: #000000; /* Chữ màu ĐEN cho ngày tháng */
+            color: #000000;
+            font-weight: 500; 
         }
         
         #neirong1 { padding: 0.5rem 0 4rem; }
 
-        /* 3. Nút làm mới: Màu đen, to rõ, không gạch chân */
+        /* NÚT BẤM: Chữ màu ĐEN, to 3.3rem */
         .shuaxinerweima { 
             text-decoration: none; 
             display: block; 
             color: #000000 !important; 
             margin: 0; 
+            font-weight: normal; 
         }
     </style>
 </head>
@@ -43,11 +46,7 @@
         
         <div class="juzhong erweima zise">
             <div id="dateTime00" class="juzuo2"></div>
-            
-            <div id="neirong">
-                <img class="ewm" src="./ewm.gif">
-            </div>
-            
+            <div id="neirong"><img class="ewm" src="./ewm.gif"></div>
             <div id="neirong1">
                 <a class="shuaxinerweima juzhong footsty" style="font-size: 3.3rem;" href="#">刷新二维码</a>
             </div>
@@ -65,7 +64,6 @@
     }
     setInterval(update, 1000); 
     update();
-    
     document.querySelector('.shuaxinerweima').onclick = e => e.preventDefault();
 </script>
 </body>
