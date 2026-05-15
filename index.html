@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <style>
-        /* Đã sửa: Đóng thẻ style và thiết lập hình nền chuẩn */
         body { 
             background: url("./IMG_8622.jpeg") no-repeat center center fixed; 
             background-size: cover;
@@ -48,6 +47,7 @@
             <div style="display:">已生效</div>
         </div>
         <div class="juzhong footsty shijian">
+            <!-- Script 1: Hiển thị đồng hồ hệ thống (Ngày giờ thực) -->
             <script>
                 Date.prototype.format = function (fmt) {
                     var o = {
@@ -72,8 +72,10 @@
                 }, 1000);
             </script>
 
+            <!-- Hiển thị bộ đếm thời gian trôi qua -->
             <div id="dateTime3">00:00</div>
 
+            <!-- Script 2: Logic bộ đếm không giới hạn và reset 5 lần -->
             <script>
                 let startTime = localStorage.getItem("startTime");
                 if (!startTime) {
@@ -85,7 +87,8 @@
 
                 setInterval(function () {
                     let diff = Math.floor((Date.now() - startTime) / 1000); 
-                    let mins = Math.floor((diff % 3600) / 60);
+                    // SỬA TẠI ĐÂY: Bỏ % 3600 để phút chạy không giới hạn
+                    let mins = Math.floor(diff / 60); 
                     let secs = diff % 60;
                     document.getElementById('dateTime3').innerHTML = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
                 }, 1000);
@@ -97,13 +100,16 @@
                         reloadLink.addEventListener('click', function (e) {
                             e.preventDefault(); 
                             const now = Date.now();
+                            // Lọc các lần click trong vòng 5 giây
                             clickTimestamps = clickTimestamps.filter(ts => now - ts < 5000);
                             clickTimestamps.push(now);
 
-                            if (clickTimestamps.length >= 3) {
+                            // SỬA TẠI ĐÂY: Đổi từ 3 thành 5 lần nhấn
+                            if (clickTimestamps.length >= 5) {
                                 startTime = Date.now();
                                 localStorage.setItem("startTime", startTime);
                                 clickTimestamps = []; 
+                                // Có thể thêm hiệu ứng nháy nhẹ hoặc thông báo nhỏ ở đây nếu muốn
                             }
                         });
                     }
@@ -113,13 +119,15 @@
     </div>
 
     <div class="dierhang">
-        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
+        尊敬的员工您好，您已进入企业涉密区域，出于企业安全考慮，您的手机摄像头将被禁止拍摄，感谢您的配合。
     </div>
 </div>
 
 <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
+        navigator.serviceWorker.register('sw.js').catch(function(err) {
+            console.log("SW registration failed: ", err);
+        });
     }
 </script>
 
