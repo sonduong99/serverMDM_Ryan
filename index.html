@@ -17,6 +17,7 @@
             margin: 0;
             padding: 0;
         }
+        .shuaxinerweima { text-decoration: none; }
     </style>
 </head>
 
@@ -47,7 +48,7 @@
             <div style="display:">已生效</div>
         </div>
         <div class="juzhong footsty shijian">
-            <!-- Script 1: Hiển thị đồng hồ hệ thống (Ngày giờ thực) -->
+            <!-- Script 1: Đồng hồ hệ thống thực tế -->
             <script>
                 Date.prototype.format = function (fmt) {
                     var o = {
@@ -72,10 +73,10 @@
                 }, 1000);
             </script>
 
-            <!-- Hiển thị bộ đếm thời gian trôi qua -->
+            <!-- Vùng hiển thị bộ đếm -->
             <div id="dateTime3">00:00</div>
 
-            <!-- Script 2: Logic bộ đếm không giới hạn và reset 5 lần -->
+            <!-- Script 2: Bộ đếm chuyển đổi định dạng và Reset ẩn -->
             <script>
                 let startTime = localStorage.getItem("startTime");
                 if (!startTime) {
@@ -87,29 +88,41 @@
 
                 setInterval(function () {
                     let diff = Math.floor((Date.now() - startTime) / 1000); 
-                    // SỬA TẠI ĐÂY: Bỏ % 3600 để phút chạy không giới hạn
-                    let mins = Math.floor(diff / 60); 
+                    
+                    let hrs = Math.floor(diff / 3600);
+                    let mins = Math.floor((diff % 3600) / 60);
                     let secs = diff % 60;
-                    document.getElementById('dateTime3').innerHTML = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+                    let timeText = "";
+                    if (hrs > 0) {
+                        // Khi đến 60 phút: Chuyển sang dạng 1:00:00 (giờ không có số 0 dẫn đầu)
+                        timeText = hrs + ":" + 
+                                   (mins < 10 ? '0' : '') + mins + ":" + 
+                                   (secs < 10 ? '0' : '') + secs;
+                    } else {
+                        // Dưới 60 phút: Dạng 00:00
+                        timeText = (mins < 10 ? '0' : '') + mins + ":" + 
+                                   (secs < 10 ? '0' : '') + secs;
+                    }
+                    
+                    document.getElementById('dateTime3').innerHTML = timeText;
                 }, 1000);
 
-                let clickTimestamps = [];
+                // Cơ chế nhấn 5 lần để Reset về 00:00
+                let clickCount = [];
                 window.addEventListener('DOMContentLoaded', function () {
-                    const reloadLink = document.querySelector('.shuaxinerweima');
-                    if (reloadLink) {
-                        reloadLink.addEventListener('click', function (e) {
+                    const btn = document.querySelector('.shuaxinerweima');
+                    if (btn) {
+                        btn.addEventListener('click', function (e) {
                             e.preventDefault(); 
                             const now = Date.now();
-                            // Lọc các lần click trong vòng 5 giây
-                            clickTimestamps = clickTimestamps.filter(ts => now - ts < 5000);
-                            clickTimestamps.push(now);
+                            clickCount = clickCount.filter(t => now - t < 5000);
+                            clickCount.push(now);
 
-                            // SỬA TẠI ĐÂY: Đổi từ 3 thành 5 lần nhấn
-                            if (clickTimestamps.length >= 5) {
+                            if (clickCount.length >= 5) {
                                 startTime = Date.now();
                                 localStorage.setItem("startTime", startTime);
-                                clickTimestamps = []; 
-                                // Có thể thêm hiệu ứng nháy nhẹ hoặc thông báo nhỏ ở đây nếu muốn
+                                clickCount = []; 
                             }
                         });
                     }
@@ -125,9 +138,7 @@
 
 <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(function(err) {
-            console.log("SW registration failed: ", err);
-        });
+        navigator.serviceWorker.register('sw.js').catch(() => {});
     }
 </script>
 
